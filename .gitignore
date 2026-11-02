@@ -1,0 +1,6 @@
+﻿synthea/
+data/
+output/
+*.duckdb
+__pycache__/
+.venv/
