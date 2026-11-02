@@ -1,0 +1,10 @@
+,value
+inpatient_encounters_raw,5655.0
+admissions_after_merging_continuations,5310.0
+stays_ending_in_death_excluded,89.0
+final_cohort_2017_2025,2023.0
+patients_in_cohort,946.0
+readmissions_30d,255.0
+readmission_rate_pct,12.61
+median_los_days,4.39
+median_age,55.1
