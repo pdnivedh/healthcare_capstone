@@ -30,6 +30,7 @@ Readmission risk model, discrete-event bed-capacity simulation, and a local LLM 
     python scripts/risk_scores_synthea.py
     python scripts/topk_uci.py
     python scripts/age_risk_check.py
+    python scripts/temporal_synthea.py
 
 load_db.py creates hospital.duckdb. eda.py creates the cleaned tables syn_stays and uci_clean. The later scripts write tables to reports/tables and figures to reports/figures.
 
@@ -50,4 +51,4 @@ load_db.py creates hospital.duckdb. eda.py creates the cleaned tables syn_stays 
 ## Team
 A: data and model | B: simulation | C: assistant and dashboard
 
-    python scripts/temporal_synthea.py
+    
