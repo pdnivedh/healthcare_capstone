@@ -8,7 +8,7 @@ Research and teaching prototype for a capstone project. It ranks inpatient stays
 - Synthea synthetic cohort (2017-2025): 2,023 stays, 946 patients, 12.6% readmitted. Rule-generated; the readmission signal partly reflects generator rules.
 
 ## Models
-Logistic regression and gradient boosting ([XGBoost / HistGradientBoosting: confirm]) on demographics, utilisation, diagnosis group, discharge and admission fields. Baseline: approximated LACE index.
+Logistic regression and gradient boosting (XGBoost 3.3.0) on demographics, utilisation, diagnosis group, discharge and admission fields. Baseline: approximated LACE index.
 Splits are by patient so no patient appears in both training and test data.
 
 ## Performance (UCI, 5-fold patient-grouped CV)
@@ -29,3 +29,4 @@ Class-conditional conformal prediction (90% target) gave 89.6% coverage for read
 - LACE inputs are approximated on both datasets, so its score is a lower bound.
 - Synthea results demonstrate the pipeline and are not clinical findings.
 - Explanations (SHAP) describe model reliance, not causal effects.
+
