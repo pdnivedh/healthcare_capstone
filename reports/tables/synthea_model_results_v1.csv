@@ -1,0 +1,6 @@
+model,features,AUROC,AUPRC,Brier
+LACE index,LACE score,0.67,0.231,
+Logistic regression,no reason,0.861,0.58,0.101
+XGBoost,no reason,0.784,0.323,0.132
+Logistic regression,with reason,0.92,0.754,0.063
+XGBoost,with reason,0.897,0.714,0.081
