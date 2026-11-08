@@ -49,3 +49,5 @@ load_db.py creates hospital.duckdb. eda.py creates the cleaned tables syn_stays 
 
 ## Team
 A: data and model | B: simulation | C: assistant and dashboard
+
+    python scripts/temporal_synthea.py
