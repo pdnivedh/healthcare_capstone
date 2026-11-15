@@ -1,6 +1,12 @@
-﻿duckdb
+﻿
+duckdb
 pandas
 matplotlib
 scikit-learn
 xgboost
 shap
+streamlit
+sqlglot
+openai
+pytest
+pytz

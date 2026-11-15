@@ -1,0 +1,411 @@
+id,difficulty,question,condition,model,generated_sql,gold_sql,status,error,gold_rows,generated_rows,gold_preview,generated_preview
+Q01,easy,How many inpatient hospital stays are in the cohort?,schema_only,qwen2.5-7b-instruct,SELECT COUNT(*) FROM syn_stays;,SELECT COUNT(*) AS total_stays FROM syn_stays,correct,,1,1,[[2023]],[[2023]]
+Q01,easy,How many inpatient hospital stays are in the cohort?,with_semantic_layer,qwen2.5-7b-instruct,SELECT COUNT(*) AS total_stays FROM syn_stays;,SELECT COUNT(*) AS total_stays FROM syn_stays,execution_error,SQL execution exceeded 12 seconds.,1,,[[2023]],
+Q02,easy,How many distinct patients had inpatient stays?,schema_only,qwen2.5-7b-instruct,SELECT COUNT(DISTINCT PATIENT) FROM syn_stays,SELECT COUNT(DISTINCT PATIENT) AS unique_patients FROM syn_stays,correct,,1,1,[[946]],[[946]]
+Q02,easy,How many distinct patients had inpatient stays?,with_semantic_layer,qwen2.5-7b-instruct,"SELECT COUNT(DISTINCT PATIENT) AS distinct_patients_count
+FROM syn_stays;",SELECT COUNT(DISTINCT PATIENT) AS unique_patients FROM syn_stays,correct,,1,1,[[946]],[[946]]
+Q03,easy,How many stays were followed by a readmission within 30 days?,schema_only,qwen2.5-7b-instruct,"SELECT COUNT(*) 
+FROM syn_stays 
+WHERE readmit_30d = TRUE;",SELECT COUNT(*) AS readmitted_stays FROM syn_stays WHERE readmit_30d = TRUE,correct,,1,1,[[255]],[[255]]
+Q03,easy,How many stays were followed by a readmission within 30 days?,with_semantic_layer,qwen2.5-7b-instruct,"SELECT COUNT(*) AS readmissions_count
+FROM syn_stays
+WHERE readmit_30d = TRUE;",SELECT COUNT(*) AS readmitted_stays FROM syn_stays WHERE readmit_30d = TRUE,correct,,1,1,[[255]],[[255]]
+Q04,easy,How many stays were not followed by a readmission within 30 days?,schema_only,qwen2.5-7b-instruct,"SELECT COUNT(*) 
+FROM syn_stays 
+WHERE readmit_30d = FALSE;",SELECT COUNT(*) AS not_readmitted_stays FROM syn_stays WHERE readmit_30d = FALSE,correct,,1,1,[[1768]],[[1768]]
+Q04,easy,How many stays were not followed by a readmission within 30 days?,with_semantic_layer,qwen2.5-7b-instruct,"SELECT COUNT(*) AS stays_not_followed_by_readmission
+FROM syn_stays
+WHERE readmit_30d = FALSE;",SELECT COUNT(*) AS not_readmitted_stays FROM syn_stays WHERE readmit_30d = FALSE,correct,,1,1,[[1768]],[[1768]]
+Q05,easy,How many admission risk-score records are available?,schema_only,qwen2.5-7b-instruct,SELECT COUNT(*) FROM syn_risk_scores,SELECT COUNT(*) AS risk_score_rows FROM syn_risk_scores,correct,,1,1,[[2023]],[[2023]]
+Q05,easy,How many admission risk-score records are available?,with_semantic_layer,qwen2.5-7b-instruct,"SELECT COUNT(*) FROM syn_stays AS s
+INNER JOIN syn_risk_scores AS r
+    ON s.PATIENT = r.PATIENT
+   AND s.START = r.START
+   AND s.STOP = r.STOP;",SELECT COUNT(*) AS risk_score_rows FROM syn_risk_scores,correct,,1,1,[[2023]],[[2023]]
+Q06,easy,What is the average hospital length of stay in days?,schema_only,qwen2.5-7b-instruct,SELECT AVG(los_days) AS avg_length_of_stay FROM syn_stays;,SELECT AVG(los_days) AS avg_los_days FROM syn_stays,correct,,1,1,[[5.7989207333]],[[5.7989207333]]
+Q06,easy,What is the average hospital length of stay in days?,with_semantic_layer,qwen2.5-7b-instruct,SELECT AVG(los_days) AS average_length_of_stay FROM syn_stays;,SELECT AVG(los_days) AS avg_los_days FROM syn_stays,correct,,1,1,[[5.7989207333]],[[5.7989207333]]
+Q07,easy,What is the shortest hospital length of stay in days?,schema_only,qwen2.5-7b-instruct,SELECT MIN(los_days) AS shortest_los_days FROM syn_stays;,SELECT MIN(los_days) AS min_los_days FROM syn_stays,correct,,1,1,[[1.0]],[[1.0]]
+Q07,easy,What is the shortest hospital length of stay in days?,with_semantic_layer,qwen2.5-7b-instruct,SELECT MIN(los_days) AS shortest_los_days FROM syn_stays;,SELECT MIN(los_days) AS min_los_days FROM syn_stays,correct,,1,1,[[1.0]],[[1.0]]
+Q08,easy,What is the longest hospital length of stay in days?,schema_only,qwen2.5-7b-instruct,SELECT MAX(los_days) AS longest_hospital_length_of Stay_in_days FROM syn_stays;,SELECT MAX(los_days) AS max_los_days FROM syn_stays,invalid_sql,"Invalid SQL: Invalid expression / Unexpected token. Line 1, Col: 63.
+  SELECT MAX(los_days) AS longest_hospital_length_of [4mStay_in_days[0m FROM syn_stays;",1,,[[49.9636111111]],
+Q08,easy,What is the longest hospital length of stay in days?,with_semantic_layer,qwen2.5-7b-instruct,SELECT MAX(los_days) AS longest_los_days FROM syn_stays;,SELECT MAX(los_days) AS max_los_days FROM syn_stays,correct,,1,1,[[49.9636111111]],[[49.9636111111]]
+Q09,easy,What is the average admission age in years?,schema_only,qwen2.5-7b-instruct,SELECT AVG(age) AS avg_age_years FROM syn_stays;,SELECT AVG(age) AS average_age FROM syn_stays,correct,,1,1,[[55.2834910507]],[[55.2834910507]]
+Q09,easy,What is the average admission age in years?,with_semantic_layer,qwen2.5-7b-instruct,SELECT AVG(age) AS average_age FROM syn_stays;,SELECT AVG(age) AS average_age FROM syn_stays,correct,,1,1,[[55.2834910507]],[[55.2834910507]]
+Q10,easy,How many distinct gender categories appear among hospital stays?,schema_only,qwen2.5-7b-instruct,SELECT COUNT(DISTINCT GENDER) FROM syn_stays,SELECT COUNT(DISTINCT GENDER) AS gender_categories FROM syn_stays,correct,,1,1,[[2]],[[2]]
+Q10,easy,How many distinct gender categories appear among hospital stays?,with_semantic_layer,qwen2.5-7b-instruct,"SELECT COUNT(DISTINCT GENDER) AS distinct_gender_count
+FROM syn_stays;",SELECT COUNT(DISTINCT GENDER) AS gender_categories FROM syn_stays,correct,,1,1,[[2]],[[2]]
+Q11,easy,How many distinct race categories appear among hospital stays?,schema_only,qwen2.5-7b-instruct,SELECT COUNT(DISTINCT RACE) FROM syn_stays,SELECT COUNT(DISTINCT RACE) AS race_categories FROM syn_stays,correct,,1,1,[[6]],[[6]]
+Q11,easy,How many distinct race categories appear among hospital stays?,with_semantic_layer,qwen2.5-7b-instruct,"SELECT COUNT(DISTINCT RACE) AS distinct_race_count
+FROM syn_stays;",SELECT COUNT(DISTINCT RACE) AS race_categories FROM syn_stays,correct,,1,1,[[6]],[[6]]
+Q12,easy,What is the average logistic-regression predicted readmission probability?,schema_only,qwen2.5-7b-instruct,SELECT AVG(risk_lr) AS avg_logistic_regression_prob FROM syn_risk_scores;,SELECT AVG(risk_lr) AS average_lr_risk FROM syn_risk_scores,correct,,1,1,[[0.1179801585]],[[0.1179801585]]
+Q12,easy,What is the average logistic-regression predicted readmission probability?,with_semantic_layer,qwen2.5-7b-instruct,"SELECT AVG(r.risk_lr) AS average_logistic_regression_probability
+FROM syn_stays AS s
+INNER JOIN syn_risk_scores AS r
+    ON s.PATIENT = r.PATIENT
+   AND s.START = r.START
+   AND s.STOP = r.STOP;",SELECT AVG(risk_lr) AS average_lr_risk FROM syn_risk_scores,correct,,1,1,[[0.1179801585]],[[0.1179801585]]
+Q13,easy,How many stays were for patients older than 65 years?,schema_only,qwen2.5-7b-instruct,SELECT COUNT(*) FROM syn_stays WHERE age > 65,SELECT COUNT(*) AS stays_over_65 FROM syn_stays WHERE age > 65,correct,,1,1,[[555]],[[555]]
+Q13,easy,How many stays were for patients older than 65 years?,with_semantic_layer,qwen2.5-7b-instruct,"SELECT COUNT(*) AS count_of_stays
+FROM syn_stays
+WHERE age > 65;",SELECT COUNT(*) AS stays_over_65 FROM syn_stays WHERE age > 65,correct,,1,1,[[555]],[[555]]
+Q14,easy,How many stays were for patients aged 65 years or younger?,schema_only,qwen2.5-7b-instruct,SELECT COUNT(*) FROM syn_stays WHERE age <= 65,SELECT COUNT(*) AS stays_65_or_younger FROM syn_stays WHERE age <= 65,correct,,1,1,[[1468]],[[1468]]
+Q14,easy,How many stays were for patients aged 65 years or younger?,with_semantic_layer,qwen2.5-7b-instruct,"SELECT COUNT(*) AS num_stays
+FROM syn_stays
+WHERE age <= 65;",SELECT COUNT(*) AS stays_65_or_younger FROM syn_stays WHERE age <= 65,correct,,1,1,[[1468]],[[1468]]
+Q15,easy,How many stays were recorded with gender F?,schema_only,qwen2.5-7b-instruct,SELECT COUNT(*) FROM syn_stays WHERE GENDER = 'F',SELECT COUNT(*) AS female_stays FROM syn_stays WHERE GENDER = 'F',correct,,1,1,[[1043]],[[1043]]
+Q15,easy,How many stays were recorded with gender F?,with_semantic_layer,qwen2.5-7b-instruct,"SELECT COUNT(*) AS female_stays_count
+FROM syn_stays
+WHERE GENDER = 'F';",SELECT COUNT(*) AS female_stays FROM syn_stays WHERE GENDER = 'F',correct,,1,1,[[1043]],[[1043]]
+Q16,easy,How many stays were recorded with gender M?,schema_only,qwen2.5-7b-instruct,SELECT COUNT(*) FROM syn_stays WHERE GENDER = 'M',SELECT COUNT(*) AS male_stays FROM syn_stays WHERE GENDER = 'M',correct,,1,1,[[980]],[[980]]
+Q16,easy,How many stays were recorded with gender M?,with_semantic_layer,qwen2.5-7b-instruct,"SELECT COUNT(*) AS male_stays_count
+FROM syn_stays
+WHERE GENDER = 'M';",SELECT COUNT(*) AS male_stays FROM syn_stays WHERE GENDER = 'M',correct,,1,1,[[980]],[[980]]
+Q17,medium,How many stays recorded with gender F were followed by a 30-day readmission?,schema_only,qwen2.5-7b-instruct,"SELECT COUNT(*) 
+FROM syn_stays AS s1
+INNER JOIN syn_risk_scores AS s2 ON s1.PATIENT = s2.PATIENT AND s1.START = s2.START AND s1.STOP = s2.STOP
+WHERE s1.GENDER = 'F' AND s1.readmit_30d = TRUE;",SELECT COUNT(*) AS female_readmitted_stays FROM syn_stays WHERE GENDER = 'F' AND readmit_30d = TRUE,correct,,1,1,[[110]],[[110]]
+Q17,medium,How many stays recorded with gender F were followed by a 30-day readmission?,with_semantic_layer,qwen2.5-7b-instruct,"SELECT COUNT(*)
+FROM syn_stays AS s
+INNER JOIN syn_risk_scores AS r
+    ON s.PATIENT = r.PATIENT
+   AND s.START = r.START
+   AND s.STOP = r.STOP
+WHERE s.GENDER = 'F' AND s.readmit_30d = TRUE;",SELECT COUNT(*) AS female_readmitted_stays FROM syn_stays WHERE GENDER = 'F' AND readmit_30d = TRUE,correct,,1,1,[[110]],[[110]]
+Q18,medium,How many stays recorded with gender M were followed by a 30-day readmission?,schema_only,qwen2.5-7b-instruct,"SELECT COUNT(*) 
+FROM syn_stays AS s1
+INNER JOIN syn_risk_scores AS s2 ON s1.PATIENT = s2.PATIENT AND s1.START = s2.START AND s1.STOP = s2.STOP
+WHERE s1.GENDER = 'M' AND s1.readmit_30d = TRUE;",SELECT COUNT(*) AS male_readmitted_stays FROM syn_stays WHERE GENDER = 'M' AND readmit_30d = TRUE,correct,,1,1,[[145]],[[145]]
+Q18,medium,How many stays recorded with gender M were followed by a 30-day readmission?,with_semantic_layer,qwen2.5-7b-instruct,"SELECT COUNT(*)
+FROM syn_stays AS s
+INNER JOIN syn_risk_scores AS r
+    ON s.PATIENT = r.PATIENT
+   AND s.START = r.START
+   AND s.STOP = r.STOP
+WHERE s.GENDER = 'M' AND s.readmit_30d = TRUE;",SELECT COUNT(*) AS male_readmitted_stays FROM syn_stays WHERE GENDER = 'M' AND readmit_30d = TRUE,correct,,1,1,[[145]],[[145]]
+Q19,medium,How many stays for patients older than 65 were followed by a 30-day readmission?,schema_only,qwen2.5-7b-instruct,"SELECT COUNT(DISTINCT s1.PATIENT)
+FROM syn_stays s1
+INNER JOIN syn_risk_scores s2 ON s1.PATIENT = s2.PATIENT AND s1.START = s2.START AND s1.STOP = s2.STOP
+WHERE s1.age > 65 AND s1.readmit_30d = TRUE",SELECT COUNT(*) AS older_readmitted_stays FROM syn_stays WHERE age > 65 AND readmit_30d = TRUE,wrong_result,,1,1,[[92]],[[16]]
+Q19,medium,How many stays for patients older than 65 were followed by a 30-day readmission?,with_semantic_layer,qwen2.5-7b-instruct,"SELECT COUNT(*) AS num_stays
+FROM syn_stays s
+INNER JOIN syn_risk_scores r
+    ON s.PATIENT = r.PATIENT
+   AND s.START = r.START
+   AND s.STOP = r.STOP
+WHERE s.age > 65 AND s.readmit_30d = TRUE;",SELECT COUNT(*) AS older_readmitted_stays FROM syn_stays WHERE age > 65 AND readmit_30d = TRUE,correct,,1,1,[[92]],[[92]]
+Q20,easy,How many inpatient stays lasted more than seven days?,schema_only,qwen2.5-7b-instruct,SELECT COUNT(*) FROM syn_stays WHERE los_days > 7;,SELECT COUNT(*) AS stays_over_seven_days FROM syn_stays WHERE los_days > 7,correct,,1,1,[[574]],[[574]]
+Q20,easy,How many inpatient stays lasted more than seven days?,with_semantic_layer,qwen2.5-7b-instruct,"SELECT COUNT(*) AS stays_over_seven_days
+FROM syn_stays
+WHERE EXTRACT(INTERVAL '1 DAY' FROM (syn_stays.STOP - syn_stays.START)) > 7;",SELECT COUNT(*) AS stays_over_seven_days FROM syn_stays WHERE los_days > 7,invalid_sql,"Invalid SQL: Expected FROM or comma after EXTRACT. Line 3, Col: 22.
+  SELECT COUNT(*) AS stays_over_seven_days
+FROM syn_stays
+WHERE EXTRACT([4mINTERVAL[0m '1 DAY' FROM (syn_stays.STOP - syn_stays.START)) > 7;",1,,[[574]],
+Q21,easy,How many inpatient stays lasted fewer than three days?,schema_only,qwen2.5-7b-instruct,SELECT COUNT(*) FROM syn_stays WHERE STOP - START < INTERVAL '3' DAY,SELECT COUNT(*) AS stays_under_three_days FROM syn_stays WHERE los_days < 3,correct,,1,1,[[625]],[[625]]
+Q21,easy,How many inpatient stays lasted fewer than three days?,with_semantic_layer,qwen2.5-7b-instruct,"SELECT COUNT(*) AS stays_fewer_than_three_days
+FROM syn_stays
+WHERE EXTRACT(EPOCH FROM (STOP - START)) / 86400 < 3;",SELECT COUNT(*) AS stays_under_three_days FROM syn_stays WHERE los_days < 3,correct,,1,1,[[625]],[[625]]
+Q22,easy,How many inpatient stays have a nonmissing admission reason?,schema_only,qwen2.5-7b-instruct,SELECT COUNT(*) FROM syn_stays WHERE reason IS NOT NULL,SELECT COUNT(*) AS stays_with_reason FROM syn_stays WHERE reason IS NOT NULL,correct,,1,1,[[2023]],[[2023]]
+Q22,easy,How many inpatient stays have a nonmissing admission reason?,with_semantic_layer,qwen2.5-7b-instruct,"SELECT COUNT(*) AS nonmissing_reason_count
+FROM syn_stays
+WHERE reason IS NOT NULL;",SELECT COUNT(*) AS stays_with_reason FROM syn_stays WHERE reason IS NOT NULL,execution_error,SQL execution exceeded 12 seconds.,1,,[[2023]],
+Q23,medium,How many risk-score records have logistic-regression risk of at least 0.2?,schema_only,qwen2.5-7b-instruct,SELECT COUNT(*) FROM syn_risk_scores WHERE risk_lr >= 0.2;,SELECT COUNT(*) AS lr_risk_at_least_point_two FROM syn_risk_scores WHERE risk_lr >= 0.2,correct,,1,1,[[545]],[[545]]
+Q23,medium,How many risk-score records have logistic-regression risk of at least 0.2?,with_semantic_layer,qwen2.5-7b-instruct,"SELECT COUNT(*) 
+FROM syn_risk_scores 
+WHERE risk_lr >= 0.2;",SELECT COUNT(*) AS lr_risk_at_least_point_two FROM syn_risk_scores WHERE risk_lr >= 0.2,execution_error,SQL execution exceeded 12 seconds.,1,,[[545]],
+Q24,medium,How many risk-score records have gradient-boosting risk of at least 0.2?,schema_only,qwen2.5-7b-instruct,SELECT COUNT(*) FROM syn_risk_scores WHERE risk_gb >= 0.2;,SELECT COUNT(*) AS gb_risk_at_least_point_two FROM syn_risk_scores WHERE risk_gb >= 0.2,execution_error,SQL execution exceeded 12 seconds.,1,,[[363]],
+Q24,medium,How many risk-score records have gradient-boosting risk of at least 0.2?,with_semantic_layer,qwen2.5-7b-instruct,"SELECT COUNT(*)
+FROM syn_risk_scores
+WHERE risk_gb >= 0.2;",SELECT COUNT(*) AS gb_risk_at_least_point_two FROM syn_risk_scores WHERE risk_gb >= 0.2,correct,,1,1,[[363]],[[363]]
+Q25,medium,How many hospital stays are there in each gender category?,schema_only,qwen2.5-7b-instruct,"SELECT GENDER, COUNT(*) AS stay_count
+FROM syn_stays
+GROUP BY GENDER;","SELECT GENDER, COUNT(*) AS stays FROM syn_stays GROUP BY GENDER ORDER BY GENDER",correct,,2,2,"[[""F"",1043],[""M"",980]]","[[""F"",1043],[""M"",980]]"
+Q25,medium,How many hospital stays are there in each gender category?,with_semantic_layer,qwen2.5-7b-instruct,"SELECT GENDER, COUNT(*) AS stay_count
+FROM syn_stays
+GROUP BY GENDER;","SELECT GENDER, COUNT(*) AS stays FROM syn_stays GROUP BY GENDER ORDER BY GENDER",correct,,2,2,"[[""F"",1043],[""M"",980]]","[[""F"",1043],[""M"",980]]"
+Q26,medium,How many 30-day readmitted stays are there in each gender category?,schema_only,qwen2.5-7b-instruct,"SELECT GENDER, COUNT(*) AS readmitted_stays
+FROM syn_stays
+WHERE readmit_30d = TRUE
+GROUP BY GENDER;","SELECT GENDER, COUNT(*) AS readmitted_stays FROM syn_stays WHERE readmit_30d = TRUE GROUP BY GENDER ORDER BY GENDER",correct,,2,2,"[[""F"",110],[""M"",145]]","[[""F"",110],[""M"",145]]"
+Q26,medium,How many 30-day readmitted stays are there in each gender category?,with_semantic_layer,qwen2.5-7b-instruct,"SELECT s.GENDER, COUNT(*) AS readmitted_stays
+FROM syn_stays AS s
+INNER JOIN syn_risk_scores AS r
+    ON s.PATIENT = r.PATIENT
+   AND s.START = r.START
+   AND s.STOP = r.STOP
+WHERE s.readmit_30d = TRUE
+GROUP BY s.GENDER;","SELECT GENDER, COUNT(*) AS readmitted_stays FROM syn_stays WHERE readmit_30d = TRUE GROUP BY GENDER ORDER BY GENDER",execution_error,SQL execution exceeded 12 seconds.,2,,"[[""F"",110],[""M"",145]]",
+Q27,medium,What proportion of stays were followed by 30-day readmission in each gender category?,schema_only,qwen2.5-7b-instruct,"SELECT GENDER, COUNT(*) FILTER (WHERE readmit_30d) / COUNT(*) AS readmission_proportion
+FROM (
+    SELECT s.PATIENT, s.START, s.STOP, s.GENDER
+    FROM syn_stays s
+    INNER JOIN syn_risk_scores r ON s.PATIENT = r.PATIENT AND s.START = r.START AND s.STOP = r.STOP
+) AS joined_data
+GROUP BY GENDER;","SELECT GENDER, AVG(CAST(readmit_30d AS DOUBLE)) AS readmission_rate FROM syn_stays GROUP BY GENDER ORDER BY GENDER",blocked_sql,"Only one direct, approved INNER JOIN is allowed.",2,,"[[""F"",0.1054650048],[""M"",0.1479591837]]",
+Q27,medium,What proportion of stays were followed by 30-day readmission in each gender category?,with_semantic_layer,qwen2.5-7b-instruct,"SELECT 
+    s.GENDER,
+    COUNT(CASE WHEN r.readmit_30d = TRUE THEN s.PATIENT END) / COUNT(s.PATIENT) AS readmission_proportion
+FROM 
+    syn_stays AS s
+INNER JOIN 
+    syn_risk_scores AS r
+ON 
+    s.PATIENT = r.PATIENT
+AND 
+    s.START = r.START
+AND 
+    s.STOP = r.STOP
+GROUP BY 
+    s.GENDER;","SELECT GENDER, AVG(CAST(readmit_30d AS DOUBLE)) AS readmission_rate FROM syn_stays GROUP BY GENDER ORDER BY GENDER",blocked_sql,Unauthorized function: CASE,2,,"[[""F"",0.1054650048],[""M"",0.1479591837]]",
+Q28,medium,How many hospital stays are there in each race category?,schema_only,qwen2.5-7b-instruct,"SELECT RACE, COUNT(*) AS stay_count
+FROM syn_stays
+GROUP BY RACE;","SELECT RACE, COUNT(*) AS stays FROM syn_stays GROUP BY RACE ORDER BY RACE",correct,,6,6,"[[""asian"",79],[""black"",147],[""hawaiian"",18],[""native"",8],[""other"",15]]","[[""white"",1756],[""asian"",79],[""black"",147],[""hawaiian"",18],[""other"",15]]"
+Q28,medium,How many hospital stays are there in each race category?,with_semantic_layer,qwen2.5-7b-instruct,"SELECT RACE, COUNT(*) AS stay_count
+FROM syn_stays
+GROUP BY RACE;","SELECT RACE, COUNT(*) AS stays FROM syn_stays GROUP BY RACE ORDER BY RACE",correct,,6,6,"[[""asian"",79],[""black"",147],[""hawaiian"",18],[""native"",8],[""other"",15]]","[[""white"",1756],[""asian"",79],[""black"",147],[""hawaiian"",18],[""other"",15]]"
+Q29,medium,What proportion of stays were followed by readmission in each race category?,schema_only,qwen2.5-7b-instruct,"SELECT 
+    RACE, 
+    COUNT(CASE WHEN syn_stays.readmit_30d THEN 1 END) / COUNT(*) AS proportion_readmitted
+FROM 
+    syn_stays
+JOIN 
+    syn_risk_scores 
+ON 
+    syn_stays.PATIENT = syn_risk_scores.PATIENT 
+    AND syn_stays.START = syn_risk_scores.START 
+    AND syn_stays.STOP = syn_risk_scores.STOP
+GROUP BY 
+    RACE;","SELECT RACE, AVG(CAST(readmit_30d AS DOUBLE)) AS readmission_rate FROM syn_stays GROUP BY RACE ORDER BY RACE",blocked_sql,Unauthorized function: CASE,6,,"[[""asian"",0.0253164557],[""black"",0.1836734694],[""hawaiian"",0.0],[""native"",0.0],[""other"",0.0]]",
+Q29,medium,What proportion of stays were followed by readmission in each race category?,with_semantic_layer,qwen2.5-7b-instruct,"SELECT 
+    RACE, 
+    COUNT(CASE WHEN s.readmit_30d = TRUE THEN 1 END) / COUNT(*) AS readmission_proportion
+FROM 
+    syn_stays AS s
+INNER JOIN 
+    syn_risk_scores AS r
+ON 
+    s.PATIENT = r.PATIENT
+AND 
+    s.START = r.START
+AND 
+    s.STOP = r.STOP
+GROUP BY 
+    RACE;","SELECT RACE, AVG(CAST(readmit_30d AS DOUBLE)) AS readmission_rate FROM syn_stays GROUP BY RACE ORDER BY RACE",blocked_sql,Unauthorized function: CASE,6,,"[[""asian"",0.0253164557],[""black"",0.1836734694],[""hawaiian"",0.0],[""native"",0.0],[""other"",0.0]]",
+Q30,medium,What is the average length of stay by gender?,schema_only,qwen2.5-7b-instruct,"SELECT GENDER, AVG(los_days) AS avg_length_of_stay
+FROM syn_stays
+GROUP BY GENDER;","SELECT GENDER, AVG(los_days) AS avg_los_days FROM syn_stays GROUP BY GENDER ORDER BY GENDER",correct,,2,2,"[[""F"",5.4872592859],[""M"",6.1306175595]]","[[""F"",5.4872592859],[""M"",6.1306175595]]"
+Q30,medium,What is the average length of stay by gender?,with_semantic_layer,qwen2.5-7b-instruct,"SELECT GENDER, AVG(los_days) AS avg_los
+FROM syn_stays
+GROUP BY GENDER;","SELECT GENDER, AVG(los_days) AS avg_los_days FROM syn_stays GROUP BY GENDER ORDER BY GENDER",execution_error,SQL execution exceeded 12 seconds.,2,,"[[""F"",5.4872592859],[""M"",6.1306175595]]",
+Q31,medium,What is the average admission age by gender?,schema_only,qwen2.5-7b-instruct,"SELECT GENDER, AVG(age) AS avg_age
+FROM syn_stays
+GROUP BY GENDER;","SELECT GENDER, AVG(age) AS avg_age FROM syn_stays GROUP BY GENDER ORDER BY GENDER",correct,,2,2,"[[""F"",53.6706192255],[""M"",57.0000474933]]","[[""F"",53.6706192255],[""M"",57.0000474933]]"
+Q31,medium,What is the average admission age by gender?,with_semantic_layer,qwen2.5-7b-instruct,"SELECT GENDER, AVG(age) AS average_age
+FROM syn_stays
+GROUP BY GENDER;","SELECT GENDER, AVG(age) AS avg_age FROM syn_stays GROUP BY GENDER ORDER BY GENDER",correct,,2,2,"[[""F"",53.6706192255],[""M"",57.0000474933]]","[[""F"",53.6706192255],[""M"",57.0000474933]]"
+Q32,medium,What is the average length of stay for readmitted versus nonreadmitted stays?,schema_only,qwen2.5-7b-instruct,"SELECT 
+    AVG(los_days) AS avg_los_readmit, 
+    AVG(CASE WHEN readmit_30d THEN los_days ELSE NULL END) AS avg_los_nonreadmit
+FROM 
+    syn_stays;","SELECT readmit_30d, AVG(los_days) AS avg_los_days FROM syn_stays GROUP BY readmit_30d ORDER BY readmit_30d",blocked_sql,Unauthorized function: CASE,2,,"[[false,5.6862766243],[true,6.5799198893]]",
+Q32,medium,What is the average length of stay for readmitted versus nonreadmitted stays?,with_semantic_layer,qwen2.5-7b-instruct,"SELECT 
+    AVG(CASE WHEN s.readmit_30d = TRUE THEN s.los_days ELSE NULL END) AS avg_los_readmitted,
+    AVG(CASE WHEN s.readmit_30d = FALSE THEN s.los_days ELSE NULL END) AS avg_los_nonreadmitted
+FROM 
+    syn_stays AS s;","SELECT readmit_30d, AVG(los_days) AS avg_los_days FROM syn_stays GROUP BY readmit_30d ORDER BY readmit_30d",blocked_sql,Unauthorized function: CASE,2,,"[[false,5.6862766243],[true,6.5799198893]]",
+Q33,hard,How many distinct patients had more than one hospital stay?,schema_only,qwen2.5-7b-instruct,"SELECT COUNT(DISTINCT PATIENT) 
+FROM syn_stays 
+GROUP BY PATIENT 
+HAVING COUNT(*) > 1",SELECT COUNT(*) AS patients_with_multiple_stays FROM (SELECT PATIENT FROM syn_stays GROUP BY PATIENT HAVING COUNT(*) > 1) AS repeated_patients,execution_error,SQL execution exceeded 12 seconds.,1,,[[293]],
+Q33,hard,How many distinct patients had more than one hospital stay?,with_semantic_layer,qwen2.5-7b-instruct,"SELECT COUNT(DISTINCT PATIENT) AS num_distinct_patients
+FROM syn_stays
+GROUP BY PATIENT
+HAVING COUNT(*) > 1;",SELECT COUNT(*) AS patients_with_multiple_stays FROM (SELECT PATIENT FROM syn_stays GROUP BY PATIENT HAVING COUNT(*) > 1) AS repeated_patients,wrong_result,,1,293,[[293]],"[[1],[1],[1],[1],[1]]"
+Q34,medium,What was the maximum length of stay in each gender category?,schema_only,qwen2.5-7b-instruct,"SELECT GENDER, MAX(los_days) AS max_length_of_stay
+FROM syn_stays
+GROUP BY GENDER;","SELECT GENDER, MAX(los_days) AS max_los_days FROM syn_stays GROUP BY GENDER ORDER BY GENDER",correct,,2,2,"[[""F"",49.9636111111],[""M"",48.9837037037]]","[[""F"",49.9636111111],[""M"",48.9837037037]]"
+Q34,medium,What was the maximum length of stay in each gender category?,with_semantic_layer,qwen2.5-7b-instruct,"SELECT GENDER, MAX(los_days) AS max_los_days
+FROM syn_stays
+GROUP BY GENDER;","SELECT GENDER, MAX(los_days) AS max_los_days FROM syn_stays GROUP BY GENDER ORDER BY GENDER",execution_error,SQL execution exceeded 12 seconds.,2,,"[[""F"",49.9636111111],[""M"",48.9837037037]]",
+Q35,medium,What is the average logistic-regression risk score for each gender category?,schema_only,qwen2.5-7b-instruct,"SELECT GENDER, AVG(risk_lr) AS avg_risk_lr
+FROM syn_stays INNER JOIN syn_risk_scores
+ON syn_stays.PATIENT = syn_risk_scores.PATIENT
+AND syn_stays.START = syn_risk_scores.START
+AND syn_stays.STOP = syn_risk_scores.STOP
+GROUP BY GENDER;","SELECT GENDER, AVG(risk_lr) AS avg_risk_lr FROM syn_risk_scores GROUP BY GENDER ORDER BY GENDER",execution_error,"Query execution failed: BinderException: Binder Error: Ambiguous reference to column name ""GENDER"" (use: 'syn_stays.GENDER' or 'syn_risk_scores.GENDER')
+
+LINE 1: SELECT * FROM (SELECT GENDER, AVG(risk_lr) AS avg_risk_lr FROM syn_stays INNER...
+                              ^^^^^^
+",2,,"[[""F"",0.0950923369],[""M"",0.1423393401]]",
+Q35,medium,What is the average logistic-regression risk score for each gender category?,with_semantic_layer,qwen2.5-7b-instruct,"SELECT GENDER, AVG(risk_lr) AS avg_risk_score
+FROM syn_stays AS s
+INNER JOIN syn_risk_scores AS r
+    ON s.PATIENT = r.PATIENT
+   AND s.START = r.START
+   AND s.STOP = r.STOP
+GROUP BY GENDER;","SELECT GENDER, AVG(risk_lr) AS avg_risk_lr FROM syn_risk_scores GROUP BY GENDER ORDER BY GENDER",execution_error,"Query execution failed: BinderException: Binder Error: Ambiguous reference to column name ""GENDER"" (use: 's.GENDER' or 'r.GENDER')
+
+LINE 1: SELECT * FROM (SELECT GENDER, AVG(risk_lr) AS avg_risk_score FROM syn_stays AS...
+                              ^^^^^^
+",2,,"[[""F"",0.0950923369],[""M"",0.1423393401]]",
+Q36,medium,What is the average gradient-boosting risk score for each gender category?,schema_only,qwen2.5-7b-instruct,"SELECT GENDER, AVG(risk_gb) AS avg_risk_gb
+FROM syn_risk_scores
+GROUP BY GENDER;","SELECT GENDER, AVG(risk_gb) AS avg_risk_gb FROM syn_risk_scores GROUP BY GENDER ORDER BY GENDER",correct,,2,2,"[[""F"",0.084276431],[""M"",0.1116458009]]","[[""F"",0.084276431],[""M"",0.1116458009]]"
+Q36,medium,What is the average gradient-boosting risk score for each gender category?,with_semantic_layer,qwen2.5-7b-instruct,"SELECT GENDER, AVG(risk_gb) AS avg_gb_risk
+FROM syn_stays s
+INNER JOIN syn_risk_scores r
+    ON s.PATIENT = r.PATIENT
+   AND s.START = r.START
+   AND s.STOP = r.STOP
+GROUP BY GENDER;","SELECT GENDER, AVG(risk_gb) AS avg_risk_gb FROM syn_risk_scores GROUP BY GENDER ORDER BY GENDER",execution_error,"Query execution failed: BinderException: Binder Error: Ambiguous reference to column name ""GENDER"" (use: 's.GENDER' or 'r.GENDER')
+
+LINE 1: SELECT * FROM (SELECT GENDER, AVG(risk_gb) AS avg_gb_risk FROM syn_stays AS s...
+                              ^^^^^^
+",2,,"[[""F"",0.084276431],[""M"",0.1116458009]]",
+Q37,medium,What is the average LACE score for each gender category?,schema_only,qwen2.5-7b-instruct,"SELECT GENDER, AVG(lace) AS avg_lace_score
+FROM syn_risk_scores
+GROUP BY GENDER;","SELECT GENDER, AVG(lace) AS avg_lace FROM syn_risk_scores GROUP BY GENDER ORDER BY GENDER",execution_error,SQL execution exceeded 12 seconds.,2,,"[[""F"",7.8485139022],[""M"",8.4306122449]]",
+Q37,medium,What is the average LACE score for each gender category?,with_semantic_layer,qwen2.5-7b-instruct,"SELECT GENDER, AVG(lace) AS avg_lace_score
+FROM syn_risk_scores
+GROUP BY GENDER;","SELECT GENDER, AVG(lace) AS avg_lace FROM syn_risk_scores GROUP BY GENDER ORDER BY GENDER",correct,,2,2,"[[""F"",7.8485139022],[""M"",8.4306122449]]","[[""F"",7.8485139022],[""M"",8.4306122449]]"
+Q38,medium,How many hospital stays started in each calendar year?,schema_only,qwen2.5-7b-instruct,"SELECT EXTRACT(YEAR FROM START) AS start_year, COUNT(*) AS stay_count
+FROM syn_stays
+GROUP BY EXTRACT(YEAR FROM START)","SELECT EXTRACT(YEAR FROM ""START"") AS admission_year, COUNT(*) AS stays FROM syn_stays GROUP BY admission_year ORDER BY admission_year",correct,,9,9,"[[2017,216],[2018,233],[2019,258],[2020,264],[2021,234]]","[[2018,233],[2021,234],[2017,216],[2022,185],[2019,258]]"
+Q38,medium,How many hospital stays started in each calendar year?,with_semantic_layer,qwen2.5-7b-instruct,"SELECT EXTRACT(YEAR FROM START) AS year, COUNT(*) AS stay_count
+FROM syn_stays
+GROUP BY EXTRACT(YEAR FROM START);","SELECT EXTRACT(YEAR FROM ""START"") AS admission_year, COUNT(*) AS stays FROM syn_stays GROUP BY admission_year ORDER BY admission_year",correct,,9,9,"[[2017,216],[2018,233],[2019,258],[2020,264],[2021,234]]","[[2018,233],[2021,234],[2017,216],[2022,185],[2019,258]]"
+Q39,medium,How many 30-day readmitted stays started in each calendar year?,schema_only,qwen2.5-7b-instruct,"SELECT EXTRACT(YEAR FROM START) AS start_year, COUNT(*)
+FROM syn_stays
+WHERE readmit_30d = TRUE
+GROUP BY start_year;","SELECT EXTRACT(YEAR FROM ""START"") AS admission_year, COUNT(*) AS readmitted_stays FROM syn_stays WHERE readmit_30d = TRUE GROUP BY admission_year ORDER BY admission_year",correct,,9,9,"[[2017,31],[2018,31],[2019,31],[2020,30],[2021,23]]","[[2018,31],[2019,31],[2020,30],[2021,23],[2017,31]]"
+Q39,medium,How many 30-day readmitted stays started in each calendar year?,with_semantic_layer,qwen2.5-7b-instruct,"SELECT 
+    EXTRACT(YEAR FROM START) AS year,
+    COUNT(*) AS readmitted_stays
+FROM 
+    syn_stays
+WHERE 
+    readmit_30d = TRUE
+GROUP BY 
+    EXTRACT(YEAR FROM START);","SELECT EXTRACT(YEAR FROM ""START"") AS admission_year, COUNT(*) AS readmitted_stays FROM syn_stays WHERE readmit_30d = TRUE GROUP BY admission_year ORDER BY admission_year",correct,,9,9,"[[2017,31],[2018,31],[2019,31],[2020,30],[2021,23]]","[[2018,31],[2019,31],[2020,30],[2021,23],[2017,31]]"
+Q40,medium,What was the average length of stay by admission year?,schema_only,qwen2.5-7b-instruct,"SELECT 
+    EXTRACT(YEAR FROM START) AS admission_year,
+    AVG(los_days) AS avg_length_of_stay
+FROM 
+    syn_stays
+GROUP BY 
+    admission_year;","SELECT EXTRACT(YEAR FROM ""START"") AS admission_year, AVG(los_days) AS avg_los_days FROM syn_stays GROUP BY admission_year ORDER BY admission_year",correct,,9,9,"[[2017,6.1777826003],[2018,5.6641369615],[2019,5.184693287],[2020,6.6803767273],[2021,6.5943196027]]","[[2018,5.6641369615],[2021,6.5943196027],[2017,6.1777826003],[2022,5.9668499124],[2019,5.184693287]]"
+Q40,medium,What was the average length of stay by admission year?,with_semantic_layer,qwen2.5-7b-instruct,"SELECT 
+    EXTRACT(YEAR FROM START) AS YEAR,
+    AVG(los_days) AS avg_los
+FROM 
+    syn_stays
+GROUP BY 
+    EXTRACT(YEAR FROM START)","SELECT EXTRACT(YEAR FROM ""START"") AS admission_year, AVG(los_days) AS avg_los_days FROM syn_stays GROUP BY admission_year ORDER BY admission_year",correct,,9,9,"[[2017,6.1777826003],[2018,5.6641369615],[2019,5.184693287],[2020,6.6803767273],[2021,6.5943196027]]","[[2018,5.6641369615],[2021,6.5943196027],[2017,6.1777826003],[2022,5.9668499124],[2019,5.184693287]]"
+Q41,medium,How many hospital stays started in calendar year 2019?,schema_only,qwen2.5-7b-instruct,SELECT COUNT(*) FROM syn_stays WHERE START >= '2019-01-01' AND START < '2020-01-01',"SELECT COUNT(*) AS stays_2019 FROM syn_stays WHERE EXTRACT(YEAR FROM ""START"") = 2019",correct,,1,1,[[258]],[[258]]
+Q41,medium,How many hospital stays started in calendar year 2019?,with_semantic_layer,qwen2.5-7b-instruct,"SELECT COUNT(*) AS num_stays_2019
+FROM syn_stays
+WHERE EXTRACT(YEAR FROM START) = 2019;","SELECT COUNT(*) AS stays_2019 FROM syn_stays WHERE EXTRACT(YEAR FROM ""START"") = 2019",correct,,1,1,[[258]],[[258]]
+Q42,medium,How many stays that started in 2020 were followed by 30-day readmission?,schema_only,qwen2.5-7b-instruct,"SELECT COUNT(*)
+FROM syn_stays AS s1
+INNER JOIN syn_risk_scores AS s2 ON s1.PATIENT = s2.PATIENT AND s1.START = s2.START AND s1.STOP = s2.STOP
+WHERE s1.START >= '2020-01-01' AND s1.START < '2021-01-01' AND s1.readmit_30d = TRUE;","SELECT COUNT(*) AS readmitted_stays_2020 FROM syn_stays WHERE EXTRACT(YEAR FROM ""START"") = 2020 AND readmit_30d = TRUE",correct,,1,1,[[30]],[[30]]
+Q42,medium,How many stays that started in 2020 were followed by 30-day readmission?,with_semantic_layer,qwen2.5-7b-instruct,"SELECT COUNT(*)
+FROM syn_stays AS s
+INNER JOIN syn_risk_scores AS r
+    ON s.PATIENT = r.PATIENT
+   AND s.START = r.START
+   AND s.STOP = r.STOP
+WHERE EXTRACT(YEAR FROM s.START) = 2020
+  AND s.readmit_30d = TRUE;","SELECT COUNT(*) AS readmitted_stays_2020 FROM syn_stays WHERE EXTRACT(YEAR FROM ""START"") = 2020 AND readmit_30d = TRUE",correct,,1,1,[[30]],[[30]]
+Q43,medium,How many distinct patients had a hospital stay starting in 2021?,schema_only,qwen2.5-7b-instruct,"SELECT COUNT(DISTINCT PATIENT) 
+FROM syn_stays 
+WHERE START >= '2021-01-01' AND START < '2022-01-01'","SELECT COUNT(DISTINCT PATIENT) AS patients_2021 FROM syn_stays WHERE EXTRACT(YEAR FROM ""START"") = 2021",correct,,1,1,[[164]],[[164]]
+Q43,medium,How many distinct patients had a hospital stay starting in 2021?,with_semantic_layer,qwen2.5-7b-instruct,"SELECT COUNT(DISTINCT PATIENT) AS num_distinct_patients_2021
+FROM syn_stays
+WHERE EXTRACT(YEAR FROM START) = 2021;","SELECT COUNT(DISTINCT PATIENT) AS patients_2021 FROM syn_stays WHERE EXTRACT(YEAR FROM ""START"") = 2021",correct,,1,1,[[164]],[[164]]
+Q44,hard,How many hospital stays have a matching risk-score record?,schema_only,qwen2.5-7b-instruct,"SELECT COUNT(DISTINCT s.PATIENT)
+FROM syn_stays s
+INNER JOIN syn_risk_scores r ON s.PATIENT = r.PATIENT AND s.START = r.START AND s.STOP = r.STOP;","SELECT COUNT(*) AS matched_stays FROM syn_stays AS s INNER JOIN syn_risk_scores AS r ON s.PATIENT = r.PATIENT AND s.""START"" = r.""START"" AND s.""STOP"" = r.""STOP""",wrong_result,,1,1,[[2023]],[[946]]
+Q44,hard,How many hospital stays have a matching risk-score record?,with_semantic_layer,qwen2.5-7b-instruct,"SELECT COUNT(*) AS matching_stays
+FROM syn_stays AS s
+INNER JOIN syn_risk_scores AS r
+    ON s.PATIENT = r.PATIENT
+   AND s.START = r.START
+   AND s.STOP = r.STOP;","SELECT COUNT(*) AS matched_stays FROM syn_stays AS s INNER JOIN syn_risk_scores AS r ON s.PATIENT = r.PATIENT AND s.""START"" = r.""START"" AND s.""STOP"" = r.""STOP""",correct,,1,1,[[2023]],[[2023]]
+Q45,hard,What is the average logistic-regression predicted risk for each admission reason?,schema_only,qwen2.5-7b-instruct,"SELECT reason, AVG(risk_gb) AS avg_risk_gb
+FROM syn_stays INNER JOIN syn_risk_scores 
+ON syn_stays.PATIENT = syn_risk_scores.PATIENT 
+AND syn_stays.START = syn_risk_scores.START 
+AND syn_stays.STOP = syn_risk_scores.STOP
+GROUP BY reason;","SELECT s.reason, AVG(r.risk_lr) AS avg_lr_risk FROM syn_stays AS s INNER JOIN syn_risk_scores AS r ON s.PATIENT = r.PATIENT AND s.""START"" = r.""START"" AND s.""STOP"" = r.""STOP"" GROUP BY s.reason ORDER BY s.reason",wrong_result,,32,32,"[[""Abnormal findings diagnostic imaging heart+coronary circulat (finding)"",0.0319959892],[""Acute ST segment elevation myocardial infarction (disorder)"",0.0204558131],[""Acute myeloid leukemia (disorder)"",0.0107648315],[""Acute non-ST segment elevation myocardial infarction (disorder)"",0.039786543],[""Aortic valve regurgitation (disorder)"",0.0273469091]]","[[""Dependent drug abuse (disorder)"",0.0203186758],[""Appendicitis (disorder)"",0.0189214661],[""Awaiting transplantation of kidney (situation)"",0.0445583365],[""Sterilization requested (situation)"",0.0019277184],[""Disease caused by severe acute respiratory syndrome coronavirus 2 (disorder)"",0.0106966282]]"
+Q45,hard,What is the average logistic-regression predicted risk for each admission reason?,with_semantic_layer,qwen2.5-7b-instruct,"SELECT s.reason, AVG(r.risk_lr) AS average_risk
+FROM syn_stays AS s
+INNER JOIN syn_risk_scores AS r
+    ON s.PATIENT = r.PATIENT
+   AND s.START = r.START
+   AND s.STOP = r.STOP
+GROUP BY s.reason;","SELECT s.reason, AVG(r.risk_lr) AS avg_lr_risk FROM syn_stays AS s INNER JOIN syn_risk_scores AS r ON s.PATIENT = r.PATIENT AND s.""START"" = r.""START"" AND s.""STOP"" = r.""STOP"" GROUP BY s.reason ORDER BY s.reason",correct,,32,32,"[[""Abnormal findings diagnostic imaging heart+coronary circulat (finding)"",0.0319959892],[""Acute ST segment elevation myocardial infarction (disorder)"",0.0204558131],[""Acute myeloid leukemia (disorder)"",0.0107648315],[""Acute non-ST segment elevation myocardial infarction (disorder)"",0.039786543],[""Aortic valve regurgitation (disorder)"",0.0273469091]]","[[""Dependent drug abuse (disorder)"",0.0357994535],[""Appendicitis (disorder)"",0.0156563591],[""Awaiting transplantation of kidney (situation)"",0.0430425485],[""Sterilization requested (situation)"",0.0194571417],[""Disease caused by severe acute respiratory syndrome coronavirus 2 (disorder)"",0.033613796]]"
+Q46,hard,What is the average gradient-boosting predicted risk for each admission reason?,schema_only,qwen2.5-7b-instruct,"SELECT reason, AVG(risk_gb) AS avg_risk_gb
+FROM syn_stays INNER JOIN syn_risk_scores
+ON syn_stays.PATIENT = syn_risk_scores.PATIENT
+AND syn_stays.START = syn_risk_scores.START
+AND syn_stays.STOP = syn_risk_scores.STOP
+GROUP BY reason;","SELECT s.reason, AVG(r.risk_gb) AS avg_gb_risk FROM syn_stays AS s INNER JOIN syn_risk_scores AS r ON s.PATIENT = r.PATIENT AND s.""START"" = r.""START"" AND s.""STOP"" = r.""STOP"" GROUP BY s.reason ORDER BY s.reason",correct,,32,32,"[[""Abnormal findings diagnostic imaging heart+coronary circulat (finding)"",0.0349234564],[""Acute ST segment elevation myocardial infarction (disorder)"",0.0132971592],[""Acute myeloid leukemia (disorder)"",0.000893523],[""Acute non-ST segment elevation myocardial infarction (disorder)"",0.0121042815],[""Aortic valve regurgitation (disorder)"",0.0196289758]]","[[""Dependent drug abuse (disorder)"",0.0203186758],[""Appendicitis (disorder)"",0.0189214661],[""Awaiting transplantation of kidney (situation)"",0.0445583365],[""Sterilization requested (situation)"",0.0019277184],[""Disease caused by severe acute respiratory syndrome coronavirus 2 (disorder)"",0.0106966282]]"
+Q46,hard,What is the average gradient-boosting predicted risk for each admission reason?,with_semantic_layer,qwen2.5-7b-instruct,"SELECT s.reason, AVG(r.risk_gb) AS avg_risk_gb
+FROM syn_stays AS s
+INNER JOIN syn_risk_scores AS r
+    ON s.PATIENT = r.PATIENT
+   AND s.START = r.START
+   AND s.STOP = r.STOP
+GROUP BY s.reason;","SELECT s.reason, AVG(r.risk_gb) AS avg_gb_risk FROM syn_stays AS s INNER JOIN syn_risk_scores AS r ON s.PATIENT = r.PATIENT AND s.""START"" = r.""START"" AND s.""STOP"" = r.""STOP"" GROUP BY s.reason ORDER BY s.reason",correct,,32,32,"[[""Abnormal findings diagnostic imaging heart+coronary circulat (finding)"",0.0349234564],[""Acute ST segment elevation myocardial infarction (disorder)"",0.0132971592],[""Acute myeloid leukemia (disorder)"",0.000893523],[""Acute non-ST segment elevation myocardial infarction (disorder)"",0.0121042815],[""Aortic valve regurgitation (disorder)"",0.0196289758]]","[[""Dependent drug abuse (disorder)"",0.0203186758],[""Appendicitis (disorder)"",0.0189214661],[""Awaiting transplantation of kidney (situation)"",0.0445583365],[""Sterilization requested (situation)"",0.0019277184],[""Disease caused by severe acute respiratory syndrome coronavirus 2 (disorder)"",0.0106966282]]"
+Q47,hard,What is the average LACE score for each admission reason?,schema_only,qwen2.5-7b-instruct,"SELECT reason, AVG(lace) AS avg_lace_score
+FROM syn_stays JOIN syn_risk_scores ON syn_stays.PATIENT = syn_risk_scores.PATIENT AND syn_stays.START = syn_risk_scores.START AND syn_stays.STOP = syn_risk_scores.STOP
+GROUP BY reason;","SELECT s.reason, AVG(r.lace) AS avg_lace FROM syn_stays AS s INNER JOIN syn_risk_scores AS r ON s.PATIENT = r.PATIENT AND s.""START"" = r.""START"" AND s.""STOP"" = r.""STOP"" GROUP BY s.reason ORDER BY s.reason",correct,,32,32,"[[""Abnormal findings diagnostic imaging heart+coronary circulat (finding)"",7.7118644068],[""Acute ST segment elevation myocardial infarction (disorder)"",8.3684210526],[""Acute myeloid leukemia (disorder)"",2.0],[""Acute non-ST segment elevation myocardial infarction (disorder)"",8.6],[""Aortic valve regurgitation (disorder)"",6.75]]","[[""Dependent drug abuse (disorder)"",8.8250591017],[""Appendicitis (disorder)"",7.7222222222],[""Awaiting transplantation of kidney (situation)"",8.8225806452],[""Sterilization requested (situation)"",2.5096153846],[""Disease caused by severe acute respiratory syndrome coronavirus 2 (disorder)"",9.9436619718]]"
+Q47,hard,What is the average LACE score for each admission reason?,with_semantic_layer,qwen2.5-7b-instruct,"SELECT s.reason, AVG(r.lace) AS average_lace_score
+FROM syn_stays AS s
+INNER JOIN syn_risk_scores AS r
+    ON s.PATIENT = r.PATIENT
+   AND s.START = r.START
+   AND s.STOP = r.STOP
+GROUP BY s.reason;","SELECT s.reason, AVG(r.lace) AS avg_lace FROM syn_stays AS s INNER JOIN syn_risk_scores AS r ON s.PATIENT = r.PATIENT AND s.""START"" = r.""START"" AND s.""STOP"" = r.""STOP"" GROUP BY s.reason ORDER BY s.reason",correct,,32,32,"[[""Abnormal findings diagnostic imaging heart+coronary circulat (finding)"",7.7118644068],[""Acute ST segment elevation myocardial infarction (disorder)"",8.3684210526],[""Acute myeloid leukemia (disorder)"",2.0],[""Acute non-ST segment elevation myocardial infarction (disorder)"",8.6],[""Aortic valve regurgitation (disorder)"",6.75]]","[[""Dependent drug abuse (disorder)"",8.8250591017],[""Appendicitis (disorder)"",7.7222222222],[""Awaiting transplantation of kidney (situation)"",8.8225806452],[""Sterilization requested (situation)"",2.5096153846],[""Disease caused by severe acute respiratory syndrome coronavirus 2 (disorder)"",9.9436619718]]"
+Q48,hard,"For admissions with logistic-regression risk at least 0.2, how many stays were there for each admission reason?",schema_only,qwen2.5-7b-instruct,"SELECT reason, COUNT(*)
+FROM syn_stays AS s
+INNER JOIN syn_risk_scores AS r ON s.PATIENT = r.PATIENT AND s.START = r.START AND s.STOP = r.STOP
+WHERE r.risk_lr >= 0.2
+GROUP BY reason;","SELECT s.reason, COUNT(*) AS high_risk_stays FROM syn_stays AS s INNER JOIN syn_risk_scores AS r ON s.PATIENT = r.PATIENT AND s.""START"" = r.""START"" AND s.""STOP"" = r.""STOP"" WHERE r.risk_lr >= 0.2 GROUP BY s.reason ORDER BY s.reason",correct,,6,6,"[[""Acute non-ST segment elevation myocardial infarction (disorder)"",1],[""Chronic congestive heart failure (disorder)"",2],[""Disease caused by severe acute respiratory syndrome coronavirus 2 (disorder)"",1],[""History of coronary artery bypass grafting (situation)"",1],[""Non-small cell carcinoma of lung  TNM stage 1 (disorder)"",454]]","[[""Non-small cell carcinoma of lung  TNM stage 1 (disorder)"",454],[""Disease caused by severe acute respiratory syndrome coronavirus 2 (disorder)"",1],[""Primary small cell malignant neoplasm of lung  TNM stage 1 (disorder)"",86],[""History of coronary artery bypass grafting (situation)"",1],[""Acute non-ST segment elevation myocardial infarction (disorder)"",1]]"
+Q48,hard,"For admissions with logistic-regression risk at least 0.2, how many stays were there for each admission reason?",with_semantic_layer,qwen2.5-7b-instruct,"SELECT s.reason, COUNT(s.adm_id) AS stay_count
+FROM syn_stays AS s
+INNER JOIN syn_risk_scores AS r
+    ON s.PATIENT = r.PATIENT
+   AND s.START = r.START
+   AND s.STOP = r.STOP
+WHERE r.risk_lr >= 0.2
+GROUP BY s.reason;","SELECT s.reason, COUNT(*) AS high_risk_stays FROM syn_stays AS s INNER JOIN syn_risk_scores AS r ON s.PATIENT = r.PATIENT AND s.""START"" = r.""START"" AND s.""STOP"" = r.""STOP"" WHERE r.risk_lr >= 0.2 GROUP BY s.reason ORDER BY s.reason",correct,,6,6,"[[""Acute non-ST segment elevation myocardial infarction (disorder)"",1],[""Chronic congestive heart failure (disorder)"",2],[""Disease caused by severe acute respiratory syndrome coronavirus 2 (disorder)"",1],[""History of coronary artery bypass grafting (situation)"",1],[""Non-small cell carcinoma of lung  TNM stage 1 (disorder)"",454]]","[[""Non-small cell carcinoma of lung  TNM stage 1 (disorder)"",454],[""Disease caused by severe acute respiratory syndrome coronavirus 2 (disorder)"",1],[""Primary small cell malignant neoplasm of lung  TNM stage 1 (disorder)"",86],[""History of coronary artery bypass grafting (situation)"",1],[""Acute non-ST segment elevation myocardial infarction (disorder)"",1]]"
+Q49,hard,"Among stays followed by 30-day readmission, what was the average logistic-regression risk by gender?",schema_only,qwen2.5-7b-instruct,"SELECT GENDER, AVG(risk_lr) AS avg_logistic_regression_risk
+FROM syn_stays
+JOIN syn_risk_scores ON syn_stays.PATIENT = syn_risk_scores.PATIENT AND syn_stays.START = syn_risk_scores.START AND syn_stays.STOP = syn_risk_scores.STOP
+WHERE readmit_30d = TRUE
+GROUP BY GENDER;","SELECT s.GENDER, AVG(r.risk_lr) AS avg_lr_risk FROM syn_stays AS s INNER JOIN syn_risk_scores AS r ON s.PATIENT = r.PATIENT AND s.""START"" = r.""START"" AND s.""STOP"" = r.""STOP"" WHERE s.readmit_30d = TRUE GROUP BY s.GENDER ORDER BY s.GENDER",execution_error,"Query execution failed: BinderException: Binder Error: Ambiguous reference to column name ""GENDER"" (use: 'syn_stays.GENDER' or 'syn_risk_scores.GENDER')
+
+LINE 1: SELECT * FROM (SELECT GENDER, AVG(risk_lr) AS avg_logistic_regression_risk FROM...
+                              ^^^^^^
+",2,,"[[""F"",0.2353699478],[""M"",0.281032473]]",
+Q49,hard,"Among stays followed by 30-day readmission, what was the average logistic-regression risk by gender?",with_semantic_layer,qwen2.5-7b-instruct,"SELECT s.GENDER, AVG(r.risk_lr) AS avg_risk_lr
+FROM syn_stays AS s
+INNER JOIN syn_risk_scores AS r
+    ON s.PATIENT = r.PATIENT
+   AND s.START = r.START
+   AND s.STOP = r.STOP
+WHERE s.readmit_30d = TRUE
+GROUP BY s.GENDER;","SELECT s.GENDER, AVG(r.risk_lr) AS avg_lr_risk FROM syn_stays AS s INNER JOIN syn_risk_scores AS r ON s.PATIENT = r.PATIENT AND s.""START"" = r.""START"" AND s.""STOP"" = r.""STOP"" WHERE s.readmit_30d = TRUE GROUP BY s.GENDER ORDER BY s.GENDER",execution_error,SQL execution exceeded 12 seconds.,2,,"[[""F"",0.2353699478],[""M"",0.281032473]]",
+Q50,hard,How many stays with logistic-regression risk at least 0.2 were followed by 30-day readmission?,schema_only,qwen2.5-7b-instruct,"SELECT COUNT(*)
+FROM syn_stays AS s
+INNER JOIN syn_risk_scores AS r ON s.PATIENT = r.PATIENT AND s.START = r.START AND s.STOP = r.STOP
+WHERE r.risk_lr >= 0.2 AND s.readmit_30d = TRUE;","SELECT COUNT(*) AS high_risk_readmitted_stays FROM syn_stays AS s INNER JOIN syn_risk_scores AS r ON s.PATIENT = r.PATIENT AND s.""START"" = r.""START"" AND s.""STOP"" = r.""STOP"" WHERE r.risk_lr >= 0.2 AND s.readmit_30d = TRUE",correct,,1,1,[[182]],[[182]]
+Q50,hard,How many stays with logistic-regression risk at least 0.2 were followed by 30-day readmission?,with_semantic_layer,qwen2.5-7b-instruct,"SELECT COUNT(*)
+FROM syn_stays AS s
+INNER JOIN syn_risk_scores AS r
+    ON s.PATIENT = r.PATIENT
+   AND s.START = r.START
+   AND s.STOP = r.STOP
+WHERE r.risk_lr >= 0.2
+AND s.readmit_30d = TRUE;","SELECT COUNT(*) AS high_risk_readmitted_stays FROM syn_stays AS s INNER JOIN syn_risk_scores AS r ON s.PATIENT = r.PATIENT AND s.""START"" = r.""START"" AND s.""STOP"" = r.""STOP"" WHERE r.risk_lr >= 0.2 AND s.readmit_30d = TRUE",correct,,1,1,[[182]],[[182]]

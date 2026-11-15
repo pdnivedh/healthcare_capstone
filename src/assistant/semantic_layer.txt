@@ -1,0 +1,101 @@
+
+HOSPITAL ANALYTICS SEMANTIC LAYER
+=================================
+
+DATA SOURCE
+- Synthea synthetic hospital records.
+- Analysis cohort: 2017–2025.
+- Prototype only. Not for clinical use.
+
+ADMISSION
+- One row in syn_stays represents one inpatient stay.
+- Total admissions: COUNT(*) FROM syn_stays.
+
+PATIENT
+- Patient identifier: PATIENT.
+- Count unique patients using COUNT(DISTINCT PATIENT).
+
+30-DAY READMISSION
+- Column: syn_stays.readmit_30d.
+- TRUE indicates a new inpatient admission within 30 days
+  after discharge from the index stay.
+- Count readmitted stays using:
+  WHERE readmit_30d = TRUE
+
+LENGTH OF STAY (LOS)
+- Column: syn_stays.los_days.
+- Unit: days.
+- Average LOS: AVG(los_days).
+
+AGE
+- Column: syn_stays.age.
+- Unit: years.
+- Age greater than 65: age > 65.
+
+SEX / GENDER
+- Column: syn_stays.GENDER.
+- Values: M and F.
+
+RACE
+- Column: syn_stays.RACE.
+
+READMISSION RISK
+- Table: syn_risk_scores.
+- Column: risk_lr.
+- Predicted 30-day readmission probability, 0 to 1.
+- Prefer risk_lr for risk-based analysis.
+
+HIGH RISK
+- Defined as the top 10% of admissions ranked by risk_lr.
+- Do not interpret this as a clinical risk threshold.
+
+LACE SCORE
+- Column: syn_risk_scores.lace.
+- Readmission risk benchmark.
+
+YEAR
+- Extract the calendar year from syn_stays.START.
+- Example: EXTRACT(YEAR FROM START).
+
+IMPORTANT RULES
+- Use only the approved hospital tables.
+- Never invent table or column names.
+- syn_risk_scores does not contain adm_id or reason.
+- Do not join syn_stays and syn_risk_scores using PATIENT alone,
+  because one patient can have multiple admissions.
+- Only generate read-only analytical SQL.
+
+HOSPITAL TABLE RELATIONSHIP
+
+syn_stays contains hospital admission information.
+syn_risk_scores contains predicted readmission risk scores.
+
+The two tables have a one-to-one relationship.
+
+To combine them, use an INNER JOIN matching all three columns:
+- PATIENT
+- START
+- STOP
+
+Example:
+
+SELECT s.reason, AVG(r.risk_lr) AS average_risk
+FROM syn_stays AS s
+INNER JOIN syn_risk_scores AS r
+    ON s.PATIENT = r.PATIENT
+   AND s.START = r.START
+   AND s.STOP = r.STOP
+GROUP BY s.reason;
+
+Never join these tables using PATIENT alone.
+
+COUNT(*) counts hospital stays.
+COUNT(DISTINCT PATIENT) counts unique patients.
+A patient may have multiple hospital stays.
+
+readmit_30d = TRUE identifies a stay followed
+by a readmission within 30 days.
+
+risk_lr is the logistic regression risk score.
+risk_gb is the gradient boosting risk score.
+lace is the LACE score.

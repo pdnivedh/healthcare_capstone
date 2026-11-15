@@ -1,0 +1,11 @@
+id,condition,original_status,recheck_outcome,elapsed_seconds,error
+Q01,with_semantic_layer,execution_error,execution_failed_again,16.03,SQL execution exceeded 12 seconds.
+Q22,with_semantic_layer,execution_error,matches_reference,15.86,
+Q23,with_semantic_layer,execution_error,matches_reference,9.11,
+Q24,schema_only,execution_error,matches_reference,8.86,
+Q26,with_semantic_layer,execution_error,matches_reference,13.47,
+Q30,with_semantic_layer,execution_error,matches_reference,6.47,
+Q33,schema_only,execution_error,different_result,3.11,
+Q34,with_semantic_layer,execution_error,matches_reference,2.73,
+Q37,schema_only,execution_error,matches_reference,3.06,
+Q49,with_semantic_layer,execution_error,matches_reference,2.83,

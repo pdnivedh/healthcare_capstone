@@ -1,0 +1,5 @@
+condition,recheck_outcome,count
+schema_only,different_result,1
+schema_only,matches_reference,2
+with_semantic_layer,execution_failed_again,1
+with_semantic_layer,matches_reference,6

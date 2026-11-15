@@ -1,0 +1,3 @@
+condition,total,recorded_correct,recorded_end_to_end_pct,timeouts,sql_binder_errors,invalid_sql,blocked_sql,wrong_result,llm_error,other_errors,additional_timeout_matches,recheck_supported_correct,recheck_supported_pct
+schema_only,50,38,76.0,3,2,1,3,3,0,0,2.0,40.0,80.0
+with_semantic_layer,50,36,72.0,7,2,1,3,1,0,0,6.0,42.0,84.0
