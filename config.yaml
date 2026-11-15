@@ -1,0 +1,12 @@
+# Settings for the digital twin (keep in sync with docs/ASSUMPTIONS.md)
+db_path: hospital.duckdb
+beds: 80
+arrival_scale: 20        # ASSUMPTION: scales the small hospital to about 70-80 beds
+top_pct: 10              # 0 = no policy
+effectiveness: 0.2       # ASSUMPTION: relative cut in return probability for flagged patients
+n_days: 365
+n_reps: 30
+seed: 42
+warmup_days: 60
+los_scale: 1.0
+score_noise: 0.0         # >0 = weaker targeting (UCI-like), see notebook section 3
