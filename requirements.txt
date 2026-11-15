@@ -10,3 +10,4 @@ sqlglot
 openai
 pytest
 pytz
+simpy
