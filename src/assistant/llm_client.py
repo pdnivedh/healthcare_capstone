@@ -1,5 +1,6 @@
 
 import re
+import os
 from pathlib import Path
 
 from openai import OpenAI
@@ -7,7 +8,7 @@ from openai import OpenAI
 from .schema import get_schema_text
 
 
-MODEL_NAME = "qwen2.5-7b-instruct"
+MODEL_NAME = os.environ.get("LLM_MODEL", "qwen2.5-7b-instruct")
 
 SEMANTIC_PATH = (
     Path(__file__).resolve().parent / "semantic_layer.txt"

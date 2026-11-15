@@ -160,11 +160,14 @@ def evaluate_one(question, condition, use_semantics, gold_df):
 
 
 def main():
+    global RESULTS
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--dry-run", action="store_true", help="Check CSV and prompts; does not need LM Studio")
     parser.add_argument("--batch-size", type=int, default=1, help="How many not-yet-complete questions to process (default 1)")
     parser.add_argument("--check-gold", action="store_true", help="Check all reference SQL in-process without LM Studio")
+    parser.add_argument("--results", default="qwen_7b_results.csv", help="Results file name inside eval/results/")
     args = parser.parse_args()
+    RESULTS = ROOT / "eval" / "results" / args.results
 
     if not QUESTIONS.exists():
         sys.exit(f"File not found: {QUESTIONS}")

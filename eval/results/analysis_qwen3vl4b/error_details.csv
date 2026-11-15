@@ -1,0 +1,106 @@
+id,difficulty,question,condition,model,generated_sql,gold_sql,status,error,gold_rows,generated_rows,gold_preview,generated_preview,error_subtype
+Q27,medium,What proportion of stays were followed by 30-day readmission in each gender category?,schema_only,qwen3-vl-4b-instruct,"SELECT 
+    GENDER, 
+    SUM(CASE WHEN readmit_30d = TRUE THEN 1 ELSE 0 END) * 1.0 / COUNT(*) AS proportion_readmitted
+FROM syn_stays
+GROUP BY GENDER;","SELECT GENDER, AVG(CAST(readmit_30d AS DOUBLE)) AS readmission_rate FROM syn_stays GROUP BY GENDER ORDER BY GENDER",blocked_sql,Unauthorized function: CASE,2,,"[[""F"",0.1054650048],[""M"",0.1479591837]]",,blocked_sql
+Q27,medium,What proportion of stays were followed by 30-day readmission in each gender category?,with_semantic_layer,qwen3-vl-4b-instruct,"SELECT 
+    s.GENDER,
+    SUM(CASE WHEN s.readmit_30d = TRUE THEN 1 ELSE 0 END) * 1.0 / COUNT(*) AS proportion_readmitted
+FROM syn_stays AS s
+INNER JOIN syn_risk_scores AS r
+    ON s.PATIENT = r.PATIENT
+   AND s.START = r.START
+   AND s.STOP = r.STOP
+GROUP BY s.GENDER;","SELECT GENDER, AVG(CAST(readmit_30d AS DOUBLE)) AS readmission_rate FROM syn_stays GROUP BY GENDER ORDER BY GENDER",blocked_sql,Unauthorized function: CASE,2,,"[[""F"",0.1054650048],[""M"",0.1479591837]]",,blocked_sql
+Q29,medium,What proportion of stays were followed by readmission in each race category?,schema_only,qwen3-vl-4b-instruct,"SELECT 
+    syn_risk_scores.RACE, 
+    SUM(CASE WHEN syn_stays.readmit_30d = TRUE THEN 1 ELSE 0 END) * 1.0 / COUNT(*) AS proportion_readmitted
+FROM 
+    syn_stays
+INNER JOIN 
+    syn_risk_scores 
+ON 
+    syn_stays.PATIENT = syn_risk_scores.PATIENT 
+    AND syn_stays.START = syn_risk_scores.START 
+    AND syn_stays.STOP = syn_risk_scores.STOP
+GROUP BY 
+    syn_risk_scores.RACE;","SELECT RACE, AVG(CAST(readmit_30d AS DOUBLE)) AS readmission_rate FROM syn_stays GROUP BY RACE ORDER BY RACE",blocked_sql,Unauthorized function: CASE,6,,"[[""asian"",0.0253164557],[""black"",0.1836734694],[""hawaiian"",0.0],[""native"",0.0],[""other"",0.0]]",,blocked_sql
+Q29,medium,What proportion of stays were followed by readmission in each race category?,with_semantic_layer,qwen3-vl-4b-instruct,"SELECT 
+    s.RACE,
+    SUM(CASE WHEN s.readmit_30d = TRUE THEN 1 ELSE 0 END) * 1.0 / COUNT(*) AS readmission_proportion
+FROM syn_stays AS s
+INNER JOIN syn_risk_scores AS r
+    ON s.PATIENT = r.PATIENT
+   AND s.START = r.START
+   AND s.STOP = r.STOP
+GROUP BY s.RACE;","SELECT RACE, AVG(CAST(readmit_30d AS DOUBLE)) AS readmission_rate FROM syn_stays GROUP BY RACE ORDER BY RACE",blocked_sql,Unauthorized function: CASE,6,,"[[""asian"",0.0253164557],[""black"",0.1836734694],[""hawaiian"",0.0],[""native"",0.0],[""other"",0.0]]",,blocked_sql
+Q30,medium,What is the average length of stay by gender?,schema_only,qwen3-vl-4b-instruct,"SELECT AVG(los_days) AS avg_length_of_stay, GENDER
+FROM syn_stays
+GROUP BY GENDER;","SELECT GENDER, AVG(los_days) AS avg_los_days FROM syn_stays GROUP BY GENDER ORDER BY GENDER",wrong_result,,2,2,"[[""F"",5.4872592859],[""M"",6.1306175595]]","[[5.4872592859,""F""],[6.1306175595,""M""]]",wrong_result
+Q31,medium,What is the average admission age by gender?,schema_only,qwen3-vl-4b-instruct,"SELECT AVG(age) AS avg_age, GENDER
+FROM syn_stays
+GROUP BY GENDER;","SELECT GENDER, AVG(age) AS avg_age FROM syn_stays GROUP BY GENDER ORDER BY GENDER",wrong_result,,2,2,"[[""F"",53.6706192255],[""M"",57.0000474933]]","[[53.6706192255,""F""],[57.0000474933,""M""]]",wrong_result
+Q31,medium,What is the average admission age by gender?,with_semantic_layer,qwen3-vl-4b-instruct,"SELECT AVG(age) AS avg_age
+FROM syn_stays
+GROUP BY GENDER;","SELECT GENDER, AVG(age) AS avg_age FROM syn_stays GROUP BY GENDER ORDER BY GENDER",wrong_result,,2,2,"[[""F"",53.6706192255],[""M"",57.0000474933]]","[[53.6706192255],[57.0000474933]]",wrong_result
+Q32,medium,What is the average length of stay for readmitted versus nonreadmitted stays?,schema_only,qwen3-vl-4b-instruct,"SELECT 
+    AVG(CASE WHEN readmit_30d THEN los_days ELSE NULL END) AS avg_length_stay_readmitted,
+    AVG(CASE WHEN NOT readmit_30d THEN los_days ELSE NULL END) AS avg_length_stay_nonreadmitted
+FROM syn_stays s
+INNER JOIN syn_risk_scores r 
+ON s.PATIENT = r.PATIENT AND s.START = r.START AND s.STOP = r.STOP;","SELECT readmit_30d, AVG(los_days) AS avg_los_days FROM syn_stays GROUP BY readmit_30d ORDER BY readmit_30d",blocked_sql,Unauthorized function: CASE,2,,"[[false,5.6862766243],[true,6.5799198893]]",,blocked_sql
+Q32,medium,What is the average length of stay for readmitted versus nonreadmitted stays?,with_semantic_layer,qwen3-vl-4b-instruct,"SELECT 
+    CASE 
+        WHEN s.readmit_30d = TRUE THEN 'Readmitted'
+        ELSE 'Nonreadmitted'
+    END AS readmission_status,
+    AVG(s.los_days) AS avg_length_of_stay
+FROM syn_stays AS s
+INNER JOIN syn_risk_scores AS r
+    ON s.PATIENT = r.PATIENT
+   AND s.START = r.START
+   AND s.STOP = r.STOP
+GROUP BY readmission_status;","SELECT readmit_30d, AVG(los_days) AS avg_los_days FROM syn_stays GROUP BY readmit_30d ORDER BY readmit_30d",blocked_sql,Unauthorized function: CASE,2,,"[[false,5.6862766243],[true,6.5799198893]]",,blocked_sql
+Q35,medium,What is the average logistic-regression risk score for each gender category?,schema_only,qwen3-vl-4b-instruct,"SELECT 
+    GENDER, 
+    AVG(risk_lr) AS avg_logistic_risk_score
+FROM 
+    syn_stays s
+JOIN 
+    syn_risk_scores r
+ON 
+    s.PATIENT = r.PATIENT 
+    AND s.START = r.START 
+    AND s.STOP = r.STOP
+GROUP BY 
+    GENDER;","SELECT GENDER, AVG(risk_lr) AS avg_risk_lr FROM syn_risk_scores GROUP BY GENDER ORDER BY GENDER",execution_error,"Query execution failed: BinderException: Binder Error: Ambiguous reference to column name ""GENDER"" (use: 's.GENDER' or 'r.GENDER')
+
+LINE 1: SELECT * FROM (SELECT GENDER, AVG(risk_lr) AS avg_logistic_risk_score FROM syn_stays...
+                              ^^^^^^
+",2,,"[[""F"",0.0950923369],[""M"",0.1423393401]]",,sql_binder_error
+Q36,medium,What is the average gradient-boosting risk score for each gender category?,schema_only,qwen3-vl-4b-instruct,"SELECT 
+  ""GENDER"", 
+  AVG(""risk_gb"") AS avg_risk_gb
+FROM 
+  syn_stays s
+INNER JOIN 
+  syn_risk_scores r
+ON 
+  s.PATIENT = r.PATIENT AND s.START = r.START AND s.STOP = r.STOP
+GROUP BY 
+  ""GENDER"";","SELECT GENDER, AVG(risk_gb) AS avg_risk_gb FROM syn_risk_scores GROUP BY GENDER ORDER BY GENDER",execution_error,"Query execution failed: BinderException: Binder Error: Ambiguous reference to column name ""GENDER"" (use: 's.GENDER' or 'r.GENDER')
+
+LINE 1: SELECT * FROM (SELECT ""GENDER"", AVG(""risk_gb"") AS avg_risk_gb FROM syn_stays AS...
+                              ^^^^^^^^
+",2,,"[[""F"",0.084276431],[""M"",0.1116458009]]",,sql_binder_error
+Q37,medium,What is the average LACE score for each gender category?,schema_only,qwen3-vl-4b-instruct,"SELECT 
+  GENDER, 
+  AVG(risk_lr) AS avg_lace_score
+FROM syn_risk_scores
+GROUP BY GENDER;","SELECT GENDER, AVG(lace) AS avg_lace FROM syn_risk_scores GROUP BY GENDER ORDER BY GENDER",wrong_result,,2,2,"[[""F"",7.8485139022],[""M"",8.4306122449]]","[[""F"",0.0950923369],[""M"",0.1423393401]]",wrong_result
+Q49,hard,"Among stays followed by 30-day readmission, what was the average logistic-regression risk by gender?",schema_only,qwen3-vl-4b-instruct,"SELECT AVG(risk_lr) AS avg_logistic_risk
+FROM syn_stays s
+INNER JOIN syn_risk_scores r ON s.PATIENT = r.PATIENT AND s.START = r.START AND s.STOP = r.STOP
+WHERE s.readmit_30d = TRUE
+GROUP BY s.GENDER;","SELECT s.GENDER, AVG(r.risk_lr) AS avg_lr_risk FROM syn_stays AS s INNER JOIN syn_risk_scores AS r ON s.PATIENT = r.PATIENT AND s.""START"" = r.""START"" AND s.""STOP"" = r.""STOP"" WHERE s.readmit_30d = TRUE GROUP BY s.GENDER ORDER BY s.GENDER",wrong_result,,2,2,"[[""F"",0.2353699478],[""M"",0.281032473]]","[[0.2353699478],[0.281032473]]",wrong_result

@@ -1,0 +1,20 @@
+id,status,detail
+Q01,PASS,gold=2023 pandas=2023
+Q02,PASS,gold=946 pandas=946
+Q03,PASS,gold=255 pandas=255
+Q06,PASS,gold=5.79892 pandas=5.79892
+Q09,PASS,gold=55.2835 pandas=55.2835
+Q13,PASS,gold=555 pandas=555
+Q19,PASS,gold=92 pandas=92
+Q20,PASS,gold=574 pandas=574
+Q23,PASS,gold=545 pandas=545
+Q27,PASS,"gold={'F': 0.1055, 'M': 0.148} pandas={'F': 0.1055, 'M': 0.148}"
+Q29,PASS,"gold={'asian': 0.0253, 'black': 0.1837, 'hawaiian': 0.0, 'native': 0.0, 'other': 0.0, 'white': 0.1287} pandas={'asian': 0.0253, 'black': 0.1837, 'hawaiian': 0.0, 'native': 0.0, 'other': 0.0, 'white': 0.1287}"
+Q32,PASS,"gold={'False': 5.6863, 'True': 6.5799} pandas={'False': 5.6863, 'True': 6.5799}"
+Q33,PASS,gold=293 pandas=293
+Q38,PASS,"gold={'2017': 216.0, '2018': 233.0, '2019': 258.0, '2020': 264.0, '2021': 234.0, '2022': 185.0, '2023': 195.0, '2024': 208.0, '2025': 230.0} pandas={'2020': 264.0, '2019': 258.0, '2021': 234.0, '2018': 233.0, '2025': 230.0, '2017': 216.0, '2024': 208.0, '2023': 195.0, '2022': 185.0}"
+Q42,PASS,gold=30 pandas=30
+Q43,PASS,gold=164 pandas=164
+Q44,PASS,gold=2023 pandas=2023
+Q49,PASS,"gold={'F': 0.2354, 'M': 0.281} pandas={'F': 0.2354, 'M': 0.281}"
+Q50,PASS,gold=182 pandas=182

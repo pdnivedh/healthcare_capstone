@@ -53,6 +53,7 @@ def main():
     parser.add_argument('--results', type=Path, default=DEFAULT_RESULTS)
     parser.add_argument('--audit', type=Path, default=DEFAULT_AUDIT)
     parser.add_argument('--output-dir', type=Path, default=DEFAULT_OUTPUT)
+    parser.add_argument('--label', default='Qwen 2.5 7B')
     args = parser.parse_args()
 
     if not args.results.is_file():
@@ -156,7 +157,7 @@ def main():
     bars = ax.bar(display, vals, width=0.55)
     ax.set_ylim(0, 100)
     ax.set_ylabel('Recorded end-to-end correctness (%)')
-    ax.set_title('Qwen 2.5 7B — Original 50-question evaluation')
+    ax.set_title(f'{args.label} — Original 50-question evaluation')
     bar_value_labels(ax, bars, decimals=1)
     ax.text(0.5, -0.17, 'Timeouts and rejected queries count as failures',
             ha='center', transform=ax.transAxes, fontsize=9)
