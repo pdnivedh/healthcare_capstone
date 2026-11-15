@@ -1,4 +1,4 @@
-
+﻿
 from pathlib import Path
 import json
 import subprocess
@@ -302,7 +302,7 @@ def validate_sql(sql: str) -> str:
 
         # AND, OR, and XOR are logical connectors,
         # not database functions.
-        if isinstance(func, exp.Connector):
+        if isinstance(func, (exp.Connector, exp.Case, exp.If)):
             continue
 
         name = (
@@ -377,3 +377,4 @@ def run_sql(sql: str) -> pd.DataFrame:
         payload["rows"],
         columns=payload["columns"],
     )
+

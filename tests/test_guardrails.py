@@ -49,3 +49,20 @@ def test_row_limit():
     sql = validate_sql("SELECT * FROM syn_stays")
     assert "LIMIT 1000" in sql.upper()
     assert len(run_sql("SELECT * FROM syn_stays")) <= 1000
+
+def test_case_expression_allowed():
+    sql = """
+    SELECT GENDER,
+           SUM(CASE WHEN readmit_30d = TRUE THEN 1 ELSE 0 END) * 1.0 / COUNT(*) AS rate
+    FROM syn_stays GROUP BY GENDER
+    """
+    validate_sql(sql)                      # must not raise
+    result = run_sql(sql)
+    assert len(result) == 2
+    assert all(0 <= float(v) <= 1 for v in result.iloc[:, 1])
+
+
+def test_case_cannot_hide_unsafe_function():
+    sql = "SELECT SUM(CASE WHEN readmit_30d THEN read_text('private.txt') ELSE 0 END) FROM syn_stays"
+    with pytest.raises(ValueError):
+        validate_sql(sql)
