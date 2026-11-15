@@ -64,3 +64,38 @@ IMPORTANT RULES
 - Do not join syn_stays and syn_risk_scores using PATIENT alone,
   because one patient can have multiple admissions.
 - Only generate read-only analytical SQL.
+
+HOSPITAL TABLE RELATIONSHIP
+
+syn_stays contains hospital admission information.
+syn_risk_scores contains predicted readmission risk scores.
+
+The two tables have a one-to-one relationship.
+
+To combine them, use an INNER JOIN matching all three columns:
+- PATIENT
+- START
+- STOP
+
+Example:
+
+SELECT s.reason, AVG(r.risk_lr) AS average_risk
+FROM syn_stays AS s
+INNER JOIN syn_risk_scores AS r
+    ON s.PATIENT = r.PATIENT
+   AND s.START = r.START
+   AND s.STOP = r.STOP
+GROUP BY s.reason;
+
+Never join these tables using PATIENT alone.
+
+COUNT(*) counts hospital stays.
+COUNT(DISTINCT PATIENT) counts unique patients.
+A patient may have multiple hospital stays.
+
+readmit_30d = TRUE identifies a stay followed
+by a readmission within 30 days.
+
+risk_lr is the logistic regression risk score.
+risk_gb is the gradient boosting risk score.
+lace is the LACE score.

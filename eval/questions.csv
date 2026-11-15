@@ -1,0 +1,51 @@
+id,difficulty,question,gold_sql
+Q01,easy,How many inpatient hospital stays are in the cohort?,SELECT COUNT(*) AS total_stays FROM syn_stays
+Q02,easy,How many distinct patients had inpatient stays?,SELECT COUNT(DISTINCT PATIENT) AS unique_patients FROM syn_stays
+Q03,easy,How many stays were followed by a readmission within 30 days?,SELECT COUNT(*) AS readmitted_stays FROM syn_stays WHERE readmit_30d = TRUE
+Q04,easy,How many stays were not followed by a readmission within 30 days?,SELECT COUNT(*) AS not_readmitted_stays FROM syn_stays WHERE readmit_30d = FALSE
+Q05,easy,How many admission risk-score records are available?,SELECT COUNT(*) AS risk_score_rows FROM syn_risk_scores
+Q06,easy,What is the average hospital length of stay in days?,SELECT AVG(los_days) AS avg_los_days FROM syn_stays
+Q07,easy,What is the shortest hospital length of stay in days?,SELECT MIN(los_days) AS min_los_days FROM syn_stays
+Q08,easy,What is the longest hospital length of stay in days?,SELECT MAX(los_days) AS max_los_days FROM syn_stays
+Q09,easy,What is the average admission age in years?,SELECT AVG(age) AS average_age FROM syn_stays
+Q10,easy,How many distinct gender categories appear among hospital stays?,SELECT COUNT(DISTINCT GENDER) AS gender_categories FROM syn_stays
+Q11,easy,How many distinct race categories appear among hospital stays?,SELECT COUNT(DISTINCT RACE) AS race_categories FROM syn_stays
+Q12,easy,What is the average logistic-regression predicted readmission probability?,SELECT AVG(risk_lr) AS average_lr_risk FROM syn_risk_scores
+Q13,easy,How many stays were for patients older than 65 years?,SELECT COUNT(*) AS stays_over_65 FROM syn_stays WHERE age > 65
+Q14,easy,How many stays were for patients aged 65 years or younger?,SELECT COUNT(*) AS stays_65_or_younger FROM syn_stays WHERE age <= 65
+Q15,easy,How many stays were recorded with gender F?,SELECT COUNT(*) AS female_stays FROM syn_stays WHERE GENDER = 'F'
+Q16,easy,How many stays were recorded with gender M?,SELECT COUNT(*) AS male_stays FROM syn_stays WHERE GENDER = 'M'
+Q17,medium,How many stays recorded with gender F were followed by a 30-day readmission?,SELECT COUNT(*) AS female_readmitted_stays FROM syn_stays WHERE GENDER = 'F' AND readmit_30d = TRUE
+Q18,medium,How many stays recorded with gender M were followed by a 30-day readmission?,SELECT COUNT(*) AS male_readmitted_stays FROM syn_stays WHERE GENDER = 'M' AND readmit_30d = TRUE
+Q19,medium,How many stays for patients older than 65 were followed by a 30-day readmission?,SELECT COUNT(*) AS older_readmitted_stays FROM syn_stays WHERE age > 65 AND readmit_30d = TRUE
+Q20,easy,How many inpatient stays lasted more than seven days?,SELECT COUNT(*) AS stays_over_seven_days FROM syn_stays WHERE los_days > 7
+Q21,easy,How many inpatient stays lasted fewer than three days?,SELECT COUNT(*) AS stays_under_three_days FROM syn_stays WHERE los_days < 3
+Q22,easy,How many inpatient stays have a nonmissing admission reason?,SELECT COUNT(*) AS stays_with_reason FROM syn_stays WHERE reason IS NOT NULL
+Q23,medium,How many risk-score records have logistic-regression risk of at least 0.2?,SELECT COUNT(*) AS lr_risk_at_least_point_two FROM syn_risk_scores WHERE risk_lr >= 0.2
+Q24,medium,How many risk-score records have gradient-boosting risk of at least 0.2?,SELECT COUNT(*) AS gb_risk_at_least_point_two FROM syn_risk_scores WHERE risk_gb >= 0.2
+Q25,medium,How many hospital stays are there in each gender category?,"SELECT GENDER, COUNT(*) AS stays FROM syn_stays GROUP BY GENDER ORDER BY GENDER"
+Q26,medium,How many 30-day readmitted stays are there in each gender category?,"SELECT GENDER, COUNT(*) AS readmitted_stays FROM syn_stays WHERE readmit_30d = TRUE GROUP BY GENDER ORDER BY GENDER"
+Q27,medium,What proportion of stays were followed by 30-day readmission in each gender category?,"SELECT GENDER, AVG(CAST(readmit_30d AS DOUBLE)) AS readmission_rate FROM syn_stays GROUP BY GENDER ORDER BY GENDER"
+Q28,medium,How many hospital stays are there in each race category?,"SELECT RACE, COUNT(*) AS stays FROM syn_stays GROUP BY RACE ORDER BY RACE"
+Q29,medium,What proportion of stays were followed by readmission in each race category?,"SELECT RACE, AVG(CAST(readmit_30d AS DOUBLE)) AS readmission_rate FROM syn_stays GROUP BY RACE ORDER BY RACE"
+Q30,medium,What is the average length of stay by gender?,"SELECT GENDER, AVG(los_days) AS avg_los_days FROM syn_stays GROUP BY GENDER ORDER BY GENDER"
+Q31,medium,What is the average admission age by gender?,"SELECT GENDER, AVG(age) AS avg_age FROM syn_stays GROUP BY GENDER ORDER BY GENDER"
+Q32,medium,What is the average length of stay for readmitted versus nonreadmitted stays?,"SELECT readmit_30d, AVG(los_days) AS avg_los_days FROM syn_stays GROUP BY readmit_30d ORDER BY readmit_30d"
+Q33,hard,How many distinct patients had more than one hospital stay?,SELECT COUNT(*) AS patients_with_multiple_stays FROM (SELECT PATIENT FROM syn_stays GROUP BY PATIENT HAVING COUNT(*) > 1) AS repeated_patients
+Q34,medium,What was the maximum length of stay in each gender category?,"SELECT GENDER, MAX(los_days) AS max_los_days FROM syn_stays GROUP BY GENDER ORDER BY GENDER"
+Q35,medium,What is the average logistic-regression risk score for each gender category?,"SELECT GENDER, AVG(risk_lr) AS avg_risk_lr FROM syn_risk_scores GROUP BY GENDER ORDER BY GENDER"
+Q36,medium,What is the average gradient-boosting risk score for each gender category?,"SELECT GENDER, AVG(risk_gb) AS avg_risk_gb FROM syn_risk_scores GROUP BY GENDER ORDER BY GENDER"
+Q37,medium,What is the average LACE score for each gender category?,"SELECT GENDER, AVG(lace) AS avg_lace FROM syn_risk_scores GROUP BY GENDER ORDER BY GENDER"
+Q38,medium,How many hospital stays started in each calendar year?,"SELECT EXTRACT(YEAR FROM ""START"") AS admission_year, COUNT(*) AS stays FROM syn_stays GROUP BY admission_year ORDER BY admission_year"
+Q39,medium,How many 30-day readmitted stays started in each calendar year?,"SELECT EXTRACT(YEAR FROM ""START"") AS admission_year, COUNT(*) AS readmitted_stays FROM syn_stays WHERE readmit_30d = TRUE GROUP BY admission_year ORDER BY admission_year"
+Q40,medium,What was the average length of stay by admission year?,"SELECT EXTRACT(YEAR FROM ""START"") AS admission_year, AVG(los_days) AS avg_los_days FROM syn_stays GROUP BY admission_year ORDER BY admission_year"
+Q41,medium,How many hospital stays started in calendar year 2019?,"SELECT COUNT(*) AS stays_2019 FROM syn_stays WHERE EXTRACT(YEAR FROM ""START"") = 2019"
+Q42,medium,How many stays that started in 2020 were followed by 30-day readmission?,"SELECT COUNT(*) AS readmitted_stays_2020 FROM syn_stays WHERE EXTRACT(YEAR FROM ""START"") = 2020 AND readmit_30d = TRUE"
+Q43,medium,How many distinct patients had a hospital stay starting in 2021?,"SELECT COUNT(DISTINCT PATIENT) AS patients_2021 FROM syn_stays WHERE EXTRACT(YEAR FROM ""START"") = 2021"
+Q44,hard,How many hospital stays have a matching risk-score record?,"SELECT COUNT(*) AS matched_stays FROM syn_stays AS s INNER JOIN syn_risk_scores AS r ON s.PATIENT = r.PATIENT AND s.""START"" = r.""START"" AND s.""STOP"" = r.""STOP"""
+Q45,hard,What is the average logistic-regression predicted risk for each admission reason?,"SELECT s.reason, AVG(r.risk_lr) AS avg_lr_risk FROM syn_stays AS s INNER JOIN syn_risk_scores AS r ON s.PATIENT = r.PATIENT AND s.""START"" = r.""START"" AND s.""STOP"" = r.""STOP"" GROUP BY s.reason ORDER BY s.reason"
+Q46,hard,What is the average gradient-boosting predicted risk for each admission reason?,"SELECT s.reason, AVG(r.risk_gb) AS avg_gb_risk FROM syn_stays AS s INNER JOIN syn_risk_scores AS r ON s.PATIENT = r.PATIENT AND s.""START"" = r.""START"" AND s.""STOP"" = r.""STOP"" GROUP BY s.reason ORDER BY s.reason"
+Q47,hard,What is the average LACE score for each admission reason?,"SELECT s.reason, AVG(r.lace) AS avg_lace FROM syn_stays AS s INNER JOIN syn_risk_scores AS r ON s.PATIENT = r.PATIENT AND s.""START"" = r.""START"" AND s.""STOP"" = r.""STOP"" GROUP BY s.reason ORDER BY s.reason"
+Q48,hard,"For admissions with logistic-regression risk at least 0.2, how many stays were there for each admission reason?","SELECT s.reason, COUNT(*) AS high_risk_stays FROM syn_stays AS s INNER JOIN syn_risk_scores AS r ON s.PATIENT = r.PATIENT AND s.""START"" = r.""START"" AND s.""STOP"" = r.""STOP"" WHERE r.risk_lr >= 0.2 GROUP BY s.reason ORDER BY s.reason"
+Q49,hard,"Among stays followed by 30-day readmission, what was the average logistic-regression risk by gender?","SELECT s.GENDER, AVG(r.risk_lr) AS avg_lr_risk FROM syn_stays AS s INNER JOIN syn_risk_scores AS r ON s.PATIENT = r.PATIENT AND s.""START"" = r.""START"" AND s.""STOP"" = r.""STOP"" WHERE s.readmit_30d = TRUE GROUP BY s.GENDER ORDER BY s.GENDER"
+Q50,hard,How many stays with logistic-regression risk at least 0.2 were followed by 30-day readmission?,"SELECT COUNT(*) AS high_risk_readmitted_stays FROM syn_stays AS s INNER JOIN syn_risk_scores AS r ON s.PATIENT = r.PATIENT AND s.""START"" = r.""START"" AND s.""STOP"" = r.""STOP"" WHERE r.risk_lr >= 0.2 AND s.readmit_30d = TRUE"
