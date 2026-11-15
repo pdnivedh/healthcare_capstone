@@ -1,0 +1,169 @@
+id,difficulty,question,gold_sql,n_rows,result_preview,error,A_verdict,A_notes
+Q01,easy,How many inpatient hospital stays are in the cohort?,SELECT COUNT(*) AS total_stays FROM syn_stays,1," total_stays
+        2023",,,
+Q02,easy,How many distinct patients had inpatient stays?,SELECT COUNT(DISTINCT PATIENT) AS unique_patients FROM syn_stays,1," unique_patients
+             946",,,
+Q03,easy,How many stays were followed by a readmission within 30 days?,SELECT COUNT(*) AS readmitted_stays FROM syn_stays WHERE readmit_30d = TRUE,1," readmitted_stays
+              255",,,
+Q04,easy,How many stays were not followed by a readmission within 30 days?,SELECT COUNT(*) AS not_readmitted_stays FROM syn_stays WHERE readmit_30d = FALSE,1," not_readmitted_stays
+                 1768",,,
+Q05,easy,How many admission risk-score records are available?,SELECT COUNT(*) AS risk_score_rows FROM syn_risk_scores,1," risk_score_rows
+            2023",,,
+Q06,easy,What is the average hospital length of stay in days?,SELECT AVG(los_days) AS avg_los_days FROM syn_stays,1," avg_los_days
+     5.798921",,,
+Q07,easy,What is the shortest hospital length of stay in days?,SELECT MIN(los_days) AS min_los_days FROM syn_stays,1," min_los_days
+          1.0",,,
+Q08,easy,What is the longest hospital length of stay in days?,SELECT MAX(los_days) AS max_los_days FROM syn_stays,1," max_los_days
+    49.963611",,,
+Q09,easy,What is the average admission age in years?,SELECT AVG(age) AS average_age FROM syn_stays,1," average_age
+   55.283491",,,
+Q10,easy,How many distinct gender categories appear among hospital stays?,SELECT COUNT(DISTINCT GENDER) AS gender_categories FROM syn_stays,1," gender_categories
+                 2",,,
+Q11,easy,How many distinct race categories appear among hospital stays?,SELECT COUNT(DISTINCT RACE) AS race_categories FROM syn_stays,1," race_categories
+               6",,,
+Q12,easy,What is the average logistic-regression predicted readmission probability?,SELECT AVG(risk_lr) AS average_lr_risk FROM syn_risk_scores,1," average_lr_risk
+         0.11798",,,
+Q13,easy,How many stays were for patients older than 65 years?,SELECT COUNT(*) AS stays_over_65 FROM syn_stays WHERE age > 65,1," stays_over_65
+           555",,,
+Q14,easy,How many stays were for patients aged 65 years or younger?,SELECT COUNT(*) AS stays_65_or_younger FROM syn_stays WHERE age <= 65,1," stays_65_or_younger
+                1468",,,
+Q15,easy,How many stays were recorded with gender F?,SELECT COUNT(*) AS female_stays FROM syn_stays WHERE GENDER = 'F',1," female_stays
+         1043",,,
+Q16,easy,How many stays were recorded with gender M?,SELECT COUNT(*) AS male_stays FROM syn_stays WHERE GENDER = 'M',1," male_stays
+        980",,,
+Q17,medium,How many stays recorded with gender F were followed by a 30-day readmission?,SELECT COUNT(*) AS female_readmitted_stays FROM syn_stays WHERE GENDER = 'F' AND readmit_30d = TRUE,1," female_readmitted_stays
+                     110",,,
+Q18,medium,How many stays recorded with gender M were followed by a 30-day readmission?,SELECT COUNT(*) AS male_readmitted_stays FROM syn_stays WHERE GENDER = 'M' AND readmit_30d = TRUE,1," male_readmitted_stays
+                   145",,,
+Q19,medium,How many stays for patients older than 65 were followed by a 30-day readmission?,SELECT COUNT(*) AS older_readmitted_stays FROM syn_stays WHERE age > 65 AND readmit_30d = TRUE,1," older_readmitted_stays
+                     92",,,
+Q20,easy,How many inpatient stays lasted more than seven days?,SELECT COUNT(*) AS stays_over_seven_days FROM syn_stays WHERE los_days > 7,1," stays_over_seven_days
+                   574",,,
+Q21,easy,How many inpatient stays lasted fewer than three days?,SELECT COUNT(*) AS stays_under_three_days FROM syn_stays WHERE los_days < 3,1," stays_under_three_days
+                    625",,,
+Q22,easy,How many inpatient stays have a nonmissing admission reason?,SELECT COUNT(*) AS stays_with_reason FROM syn_stays WHERE reason IS NOT NULL,1," stays_with_reason
+              2023",,,
+Q23,medium,How many risk-score records have logistic-regression risk of at least 0.2?,SELECT COUNT(*) AS lr_risk_at_least_point_two FROM syn_risk_scores WHERE risk_lr >= 0.2,1," lr_risk_at_least_point_two
+                        545",,,
+Q24,medium,How many risk-score records have gradient-boosting risk of at least 0.2?,SELECT COUNT(*) AS gb_risk_at_least_point_two FROM syn_risk_scores WHERE risk_gb >= 0.2,1," gb_risk_at_least_point_two
+                        363",,,
+Q25,medium,How many hospital stays are there in each gender category?,"SELECT GENDER, COUNT(*) AS stays FROM syn_stays GROUP BY GENDER ORDER BY GENDER",2,"GENDER  stays
+     F   1043
+     M    980",,,
+Q26,medium,How many 30-day readmitted stays are there in each gender category?,"SELECT GENDER, COUNT(*) AS readmitted_stays FROM syn_stays WHERE readmit_30d = TRUE GROUP BY GENDER ORDER BY GENDER",2,"GENDER  readmitted_stays
+     F               110
+     M               145",,,
+Q27,medium,What proportion of stays were followed by 30-day readmission in each gender category?,"SELECT GENDER, AVG(CAST(readmit_30d AS DOUBLE)) AS readmission_rate FROM syn_stays GROUP BY GENDER ORDER BY GENDER",2,"GENDER  readmission_rate
+     F          0.105465
+     M          0.147959",,,
+Q28,medium,How many hospital stays are there in each race category?,"SELECT RACE, COUNT(*) AS stays FROM syn_stays GROUP BY RACE ORDER BY RACE",6,"    RACE  stays
+   asian     79
+   black    147
+hawaiian     18
+  native      8
+   other     15
+   white   1756",,,
+Q29,medium,What proportion of stays were followed by readmission in each race category?,"SELECT RACE, AVG(CAST(readmit_30d AS DOUBLE)) AS readmission_rate FROM syn_stays GROUP BY RACE ORDER BY RACE",6,"    RACE  readmission_rate
+   asian          0.025316
+   black          0.183673
+hawaiian          0.000000
+  native          0.000000
+   other          0.000000
+   white          0.128702",,,
+Q30,medium,What is the average length of stay by gender?,"SELECT GENDER, AVG(los_days) AS avg_los_days FROM syn_stays GROUP BY GENDER ORDER BY GENDER",2,"GENDER  avg_los_days
+     F      5.487259
+     M      6.130618",,,
+Q31,medium,What is the average admission age by gender?,"SELECT GENDER, AVG(age) AS avg_age FROM syn_stays GROUP BY GENDER ORDER BY GENDER",2,"GENDER   avg_age
+     F 53.670619
+     M 57.000047",,,
+Q32,medium,What is the average length of stay for readmitted versus nonreadmitted stays?,"SELECT readmit_30d, AVG(los_days) AS avg_los_days FROM syn_stays GROUP BY readmit_30d ORDER BY readmit_30d",2," readmit_30d  avg_los_days
+       False      5.686277
+        True      6.579920",,,
+Q33,hard,How many distinct patients had more than one hospital stay?,SELECT COUNT(*) AS patients_with_multiple_stays FROM (SELECT PATIENT FROM syn_stays GROUP BY PATIENT HAVING COUNT(*) > 1) AS repeated_patients,1," patients_with_multiple_stays
+                          293",,,
+Q34,medium,What was the maximum length of stay in each gender category?,"SELECT GENDER, MAX(los_days) AS max_los_days FROM syn_stays GROUP BY GENDER ORDER BY GENDER",2,"GENDER  max_los_days
+     F     49.963611
+     M     48.983704",,,
+Q35,medium,What is the average logistic-regression risk score for each gender category?,"SELECT GENDER, AVG(risk_lr) AS avg_risk_lr FROM syn_risk_scores GROUP BY GENDER ORDER BY GENDER",2,"GENDER  avg_risk_lr
+     F     0.095092
+     M     0.142339",,,
+Q36,medium,What is the average gradient-boosting risk score for each gender category?,"SELECT GENDER, AVG(risk_gb) AS avg_risk_gb FROM syn_risk_scores GROUP BY GENDER ORDER BY GENDER",2,"GENDER  avg_risk_gb
+     F     0.084276
+     M     0.111646",,,
+Q37,medium,What is the average LACE score for each gender category?,"SELECT GENDER, AVG(lace) AS avg_lace FROM syn_risk_scores GROUP BY GENDER ORDER BY GENDER",2,"GENDER  avg_lace
+     F  7.848514
+     M  8.430612",,,
+Q38,medium,How many hospital stays started in each calendar year?,"SELECT EXTRACT(YEAR FROM ""START"") AS admission_year, COUNT(*) AS stays FROM syn_stays GROUP BY admission_year ORDER BY admission_year",9," admission_year  stays
+           2017    216
+           2018    233
+           2019    258
+           2020    264
+           2021    234
+           2022    185
+           2023    195
+           2024    208",,,
+Q39,medium,How many 30-day readmitted stays started in each calendar year?,"SELECT EXTRACT(YEAR FROM ""START"") AS admission_year, COUNT(*) AS readmitted_stays FROM syn_stays WHERE readmit_30d = TRUE GROUP BY admission_year ORDER BY admission_year",9," admission_year  readmitted_stays
+           2017                31
+           2018                31
+           2019                31
+           2020                30
+           2021                23
+           2022                23
+           2023                24
+           2024                28",,,
+Q40,medium,What was the average length of stay by admission year?,"SELECT EXTRACT(YEAR FROM ""START"") AS admission_year, AVG(los_days) AS avg_los_days FROM syn_stays GROUP BY admission_year ORDER BY admission_year",9," admission_year  avg_los_days
+           2017      6.177783
+           2018      5.664137
+           2019      5.184693
+           2020      6.680377
+           2021      6.594320
+           2022      5.966850
+           2023      5.344519
+           2024      5.324439",,,
+Q41,medium,How many hospital stays started in calendar year 2019?,"SELECT COUNT(*) AS stays_2019 FROM syn_stays WHERE EXTRACT(YEAR FROM ""START"") = 2019",1," stays_2019
+        258",,,
+Q42,medium,How many stays that started in 2020 were followed by 30-day readmission?,"SELECT COUNT(*) AS readmitted_stays_2020 FROM syn_stays WHERE EXTRACT(YEAR FROM ""START"") = 2020 AND readmit_30d = TRUE",1," readmitted_stays_2020
+                    30",,,
+Q43,medium,How many distinct patients had a hospital stay starting in 2021?,"SELECT COUNT(DISTINCT PATIENT) AS patients_2021 FROM syn_stays WHERE EXTRACT(YEAR FROM ""START"") = 2021",1," patients_2021
+           164",,,
+Q44,hard,How many hospital stays have a matching risk-score record?,"SELECT COUNT(*) AS matched_stays FROM syn_stays AS s INNER JOIN syn_risk_scores AS r ON s.PATIENT = r.PATIENT AND s.""START"" = r.""START"" AND s.""STOP"" = r.""STOP""",1," matched_stays
+          2023",,,
+Q45,hard,What is the average logistic-regression predicted risk for each admission reason?,"SELECT s.reason, AVG(r.risk_lr) AS avg_lr_risk FROM syn_stays AS s INNER JOIN syn_risk_scores AS r ON s.PATIENT = r.PATIENT AND s.""START"" = r.""START"" AND s.""STOP"" = r.""STOP"" GROUP BY s.reason ORDER BY s.reason",32,"                                                                reason  avg_lr_risk
+Abnormal findings diagnostic imaging heart+coronary circulat (finding)     0.031996
+           Acute ST segment elevation myocardial infarction (disorder)     0.020456
+                                     Acute myeloid leukemia (disorder)     0.010765
+       Acute non-ST segment elevation myocardial infarction (disorder)     0.039787
+                                 Aortic valve regurgitation (disorder)     0.027347
+                                      Aortic valve stenosis (disorder)     0.030613
+                                               Appendicitis (disorder)     0.015656
+                   Awaiting transplantation of bone marrow (situation)     0.039646",,,
+Q46,hard,What is the average gradient-boosting predicted risk for each admission reason?,"SELECT s.reason, AVG(r.risk_gb) AS avg_gb_risk FROM syn_stays AS s INNER JOIN syn_risk_scores AS r ON s.PATIENT = r.PATIENT AND s.""START"" = r.""START"" AND s.""STOP"" = r.""STOP"" GROUP BY s.reason ORDER BY s.reason",32,"                                                                reason  avg_gb_risk
+Abnormal findings diagnostic imaging heart+coronary circulat (finding)     0.034923
+           Acute ST segment elevation myocardial infarction (disorder)     0.013297
+                                     Acute myeloid leukemia (disorder)     0.000894
+       Acute non-ST segment elevation myocardial infarction (disorder)     0.012104
+                                 Aortic valve regurgitation (disorder)     0.019629
+                                      Aortic valve stenosis (disorder)     0.020118
+                                               Appendicitis (disorder)     0.018921
+                   Awaiting transplantation of bone marrow (situation)     0.032365",,,
+Q47,hard,What is the average LACE score for each admission reason?,"SELECT s.reason, AVG(r.lace) AS avg_lace FROM syn_stays AS s INNER JOIN syn_risk_scores AS r ON s.PATIENT = r.PATIENT AND s.""START"" = r.""START"" AND s.""STOP"" = r.""STOP"" GROUP BY s.reason ORDER BY s.reason",32,"                                                                reason  avg_lace
+Abnormal findings diagnostic imaging heart+coronary circulat (finding)  7.711864
+           Acute ST segment elevation myocardial infarction (disorder)  8.368421
+                                     Acute myeloid leukemia (disorder)  2.000000
+       Acute non-ST segment elevation myocardial infarction (disorder)  8.600000
+                                 Aortic valve regurgitation (disorder)  6.750000
+                                      Aortic valve stenosis (disorder)  6.750000
+                                               Appendicitis (disorder)  7.722222
+                   Awaiting transplantation of bone marrow (situation) 10.214286",,,
+Q48,hard,"For admissions with logistic-regression risk at least 0.2, how many stays were there for each admission reason?","SELECT s.reason, COUNT(*) AS high_risk_stays FROM syn_stays AS s INNER JOIN syn_risk_scores AS r ON s.PATIENT = r.PATIENT AND s.""START"" = r.""START"" AND s.""STOP"" = r.""STOP"" WHERE r.risk_lr >= 0.2 GROUP BY s.reason ORDER BY s.reason",6,"                                                                      reason  high_risk_stays
+             Acute non-ST segment elevation myocardial infarction (disorder)                1
+                                 Chronic congestive heart failure (disorder)                2
+Disease caused by severe acute respiratory syndrome coronavirus 2 (disorder)                1
+                      History of coronary artery bypass grafting (situation)                1
+                    Non-small cell carcinoma of lung  TNM stage 1 (disorder)              454
+       Primary small cell malignant neoplasm of lung  TNM stage 1 (disorder)               86",,,
+Q49,hard,"Among stays followed by 30-day readmission, what was the average logistic-regression risk by gender?","SELECT s.GENDER, AVG(r.risk_lr) AS avg_lr_risk FROM syn_stays AS s INNER JOIN syn_risk_scores AS r ON s.PATIENT = r.PATIENT AND s.""START"" = r.""START"" AND s.""STOP"" = r.""STOP"" WHERE s.readmit_30d = TRUE GROUP BY s.GENDER ORDER BY s.GENDER",2,"GENDER  avg_lr_risk
+     F     0.235370
+     M     0.281032",,,
+Q50,hard,How many stays with logistic-regression risk at least 0.2 were followed by 30-day readmission?,"SELECT COUNT(*) AS high_risk_readmitted_stays FROM syn_stays AS s INNER JOIN syn_risk_scores AS r ON s.PATIENT = r.PATIENT AND s.""START"" = r.""START"" AND s.""STOP"" = r.""STOP"" WHERE r.risk_lr >= 0.2 AND s.readmit_30d = TRUE",1," high_risk_readmitted_stays
+                        182",,,
