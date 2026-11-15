@@ -14,7 +14,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from src.assistant.text_to_sql import ask
-from src.sim.simulate import simulate
+from simulation.simulate import simulate
 
 DB_PATH = ROOT / "hospital.duckdb"
 TABLES = ROOT / "reports" / "tables"
