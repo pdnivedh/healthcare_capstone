@@ -1,0 +1,21 @@
+model,id,condition,original_status,rescored
+Qwen 2.5 7B,Q19,schema_only,wrong_result,genuinely_wrong
+Qwen 2.5 7B,Q29,schema_only,blocked_sql,"error: Binder Error: Ambiguous reference to column name ""RACE"" (use: 'syn_stays.RACE' o"
+Qwen 2.5 7B,Q32,schema_only,blocked_sql,still_wrong_after_CASE_allowed
+Qwen 2.5 7B,Q44,schema_only,wrong_result,genuinely_wrong
+Qwen 2.5 7B,Q45,schema_only,wrong_result,genuinely_wrong
+Qwen 2.5 7B,Q27,with_semantic_layer,blocked_sql,correct_if_CASE_allowed
+Qwen 2.5 7B,Q29,with_semantic_layer,blocked_sql,"error: Binder Error: Ambiguous reference to column name ""RACE"" (use: 's.RACE' or 'r.RAC"
+Qwen 2.5 7B,Q32,with_semantic_layer,blocked_sql,still_wrong_after_CASE_allowed
+Qwen 2.5 7B,Q33,with_semantic_layer,wrong_result,genuinely_wrong
+Qwen3-VL 4B,Q27,schema_only,blocked_sql,correct_if_CASE_allowed
+Qwen3-VL 4B,Q29,schema_only,blocked_sql,correct_if_CASE_allowed
+Qwen3-VL 4B,Q30,schema_only,wrong_result,correct_if_column_order_ignored
+Qwen3-VL 4B,Q31,schema_only,wrong_result,correct_if_column_order_ignored
+Qwen3-VL 4B,Q32,schema_only,blocked_sql,"error: Binder Error: Ambiguous reference to column name ""readmit_30d"" (use: 's.readmit_"
+Qwen3-VL 4B,Q37,schema_only,wrong_result,genuinely_wrong
+Qwen3-VL 4B,Q49,schema_only,wrong_result,genuinely_wrong
+Qwen3-VL 4B,Q27,with_semantic_layer,blocked_sql,correct_if_CASE_allowed
+Qwen3-VL 4B,Q29,with_semantic_layer,blocked_sql,correct_if_CASE_allowed
+Qwen3-VL 4B,Q31,with_semantic_layer,wrong_result,genuinely_wrong
+Qwen3-VL 4B,Q32,with_semantic_layer,blocked_sql,still_wrong_after_CASE_allowed

@@ -1,0 +1,5 @@
+model,condition,n,strict_correct,strict_pct,plus_CASE_allowed,plus_column_order_ignored,lenient_correct,lenient_pct
+Qwen 2.5 7B,schema_only,50,38,76.0,0,0,38,76.0
+Qwen 2.5 7B,with_semantic_layer,50,36,72.0,1,0,37,74.0
+Qwen3-VL 4B,schema_only,50,41,82.0,2,2,45,90.0
+Qwen3-VL 4B,with_semantic_layer,50,46,92.0,2,0,48,96.0
